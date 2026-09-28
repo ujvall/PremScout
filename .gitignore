@@ -30,15 +30,30 @@ data/database/
 *.sqlite3
 
 # Model artifacts & checkpoints
-models/*.pkl
-models/*.joblib
-models/*.pt
-models/*.onnx
 *.pkl
 *.joblib
+*.pt
+*.onnx
+
+# Frontend dependencies/build output
+frontend/node_modules/
+frontend/dist/
+
+# General build/cache output
+dist/
+build/
+.cache/
+
+# Test/cache files
+.pytest_cache/
+.coverage
+htmlcov/
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
+
+# Local scratch files
+scratch/
 
 # Operating System files
 .DS_Store
