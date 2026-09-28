@@ -1,0 +1,180 @@
+{
+  "model_type": "Position-Weighted Vector Retrieval Engine (V2 Refined Archetypes)",
+  "dataset_rows": 2325,
+  "features": [
+    "goals_per90",
+    "assists_per90",
+    "xG_per90",
+    "npxG_per90",
+    "xAG_per90",
+    "shots_per90",
+    "key_passes_per90",
+    "pass_completion_pct",
+    "progressive_passes_per90",
+    "progressive_carries_per90",
+    "successful_takeons_per90",
+    "tackles_won_per90",
+    "interceptions_per90",
+    "blocks_per90",
+    "clearances_per90",
+    "aerial_won_pct"
+  ],
+  "position_mapping": {
+    "GK": "GK",
+    "DF": "DF",
+    "DF,MF": "DM/WB",
+    "MF,DF": "DM/WB",
+    "DF,FW": "DM/WB",
+    "FW,DF": "DM/WB",
+    "MF": "CM",
+    "MF,FW": "AM/W",
+    "FW,MF": "AM/W",
+    "FW": "FW"
+  },
+  "compatibility_map": {
+    "GK": [
+      "GK"
+    ],
+    "DF": [
+      "DM/WB",
+      "DF"
+    ],
+    "DM/WB": [
+      "DF",
+      "CM",
+      "DM/WB"
+    ],
+    "CM": [
+      "CM",
+      "DM/WB",
+      "AM/W"
+    ],
+    "AM/W": [
+      "FW",
+      "CM",
+      "AM/W"
+    ],
+    "FW": [
+      "FW",
+      "AM/W"
+    ]
+  },
+  "weights": {
+    "DF": [
+      0.1,
+      0.3,
+      0.1,
+      0.1,
+      0.3,
+      0.1,
+      0.5,
+      1.6,
+      1.2,
+      1.0,
+      0.4,
+      2.0,
+      2.0,
+      1.8,
+      2.2,
+      2.0
+    ],
+    "DM/WB": [
+      0.3,
+      0.6,
+      0.3,
+      0.3,
+      0.8,
+      0.4,
+      1.2,
+      1.6,
+      1.8,
+      1.6,
+      1.2,
+      1.8,
+      1.8,
+      1.4,
+      1.2,
+      1.2
+    ],
+    "CM": [
+      0.4,
+      1.0,
+      0.4,
+      0.4,
+      1.2,
+      0.5,
+      1.6,
+      1.8,
+      2.0,
+      1.8,
+      1.2,
+      1.5,
+      1.5,
+      1.0,
+      0.6,
+      0.8
+    ],
+    "AM/W": [
+      1.6,
+      1.6,
+      1.6,
+      1.6,
+      1.8,
+      1.6,
+      1.8,
+      1.1,
+      1.3,
+      1.8,
+      2.0,
+      0.6,
+      0.6,
+      0.4,
+      0.2,
+      0.4
+    ],
+    "FW": [
+      2.0,
+      1.1,
+      2.0,
+      2.0,
+      1.1,
+      1.8,
+      1.1,
+      0.8,
+      0.6,
+      1.1,
+      1.4,
+      0.4,
+      0.3,
+      0.3,
+      0.2,
+      1.6
+    ],
+    "GK": [
+      0.02,
+      0.02,
+      0.02,
+      0.02,
+      0.02,
+      0.02,
+      0.02,
+      2.5,
+      0.02,
+      0.02,
+      0.02,
+      0.02,
+      0.02,
+      0.02,
+      0.02,
+      2.5
+    ]
+  },
+  "retrieval_metrics": {
+    "top5_same": 0.7330752688172043,
+    "top10_same": 0.7241720430107527,
+    "top5_comp": 0.9256774193548386,
+    "pos_mrr": 0.8246979700150799,
+    "ndcg5": 0.9430202611421972,
+    "ndcg10": 0.9364130671619154
+  }
+}

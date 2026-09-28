@@ -1,0 +1,136 @@
+target_player,target_position,target_season,rank,candidate_player,candidate_club,candidate_position,candidate_season,similarity_score,is_same_position,is_compatible,age,market_value_eur
+Alisson,GK,2023-24,1,Ederson,Manchester City,GK,2021-22,99.3,True,True,27.0,45000000.0
+Alisson,GK,2023-24,2,Edouard Mendy,Chelsea,GK,2020-21,99.2,True,True,28.0,25000000.0
+Alisson,GK,2023-24,3,Ederson,Manchester City,GK,2019-20,98.0,True,True,25.0,
+Alisson,GK,2023-24,4,Ederson,Manchester City,GK,2022-23,97.6,True,True,28.0,40000000.0
+Alisson,GK,2023-24,5,Jason Steele,Brighton,GK,2022-23,97.4,True,True,31.0,4000000.0
+Ederson,GK,2023-24,1,Bart Verbruggen,Brighton,GK,2023-24,100.0,True,True,21.8,18000000.0
+Ederson,GK,2023-24,2,Alisson,Liverpool,GK,2022-23,100.0,True,True,29.0,35000000.0
+Ederson,GK,2023-24,3,Alisson,Liverpool,GK,2021-22,100.0,True,True,28.0,50000000.0
+Ederson,GK,2023-24,4,Alisson,Liverpool,GK,2020-21,99.9,True,True,27.0,60000000.0
+Ederson,GK,2023-24,5,Jason Steele,Brighton,GK,2022-23,99.9,True,True,31.0,4000000.0
+David Raya,GK,2023-24,1,Bernd Leno,Arsenal,GK,2019-20,100.0,True,True,27.0,32000000.0
+David Raya,GK,2023-24,2,Alphonse Areola,Fulham,GK,2020-21,99.8,True,True,27.0,17000000.0
+David Raya,GK,2023-24,3,Fraser Forster,Tottenham Hotspur,GK,2022-23,99.7,True,True,34.0,1500000.0
+David Raya,GK,2023-24,4,Emiliano Martínez,Aston Villa,GK,2022-23,99.7,True,True,29.0,28000000.0
+David Raya,GK,2023-24,5,Illan Meslier,Leeds United,GK,2021-22,99.7,True,True,21.0,20000000.0
+Jordan Pickford,GK,2023-24,1,Łukasz Fabiański,West Ham United,GK,2021-22,100.0,True,True,36.0,1000000.0
+Jordan Pickford,GK,2023-24,2,Łukasz Fabiański,West Ham United,GK,2022-23,100.0,True,True,37.0,900000.0
+Jordan Pickford,GK,2023-24,3,Dean Henderson,Nottingham Forest,GK,2022-23,100.0,True,True,25.0,18000000.0
+Jordan Pickford,GK,2023-24,4,Alex McCarthy,Southampton,GK,2021-22,100.0,True,True,31.0,3000000.0
+Jordan Pickford,GK,2023-24,5,Alphonse Areola,West Ham United,GK,2023-24,99.9,True,True,31.3,10000000.0
+Virgil van Dijk,DF,2023-24,1,Adam Webster,Brighton,DF,2023-24,95.2,True,True,29.4,20000000.0
+Virgil van Dijk,DF,2023-24,2,Thiago Silva,Chelsea,DF,2022-23,93.0,True,True,37.0,2000000.0
+Virgil van Dijk,DF,2023-24,3,Eric Dier,Tottenham Hotspur,DF,2022-23,92.5,True,True,28.0,18000000.0
+Virgil van Dijk,DF,2023-24,4,Adam Webster,Brighton,DF,2022-23,92.2,True,True,27.0,25000000.0
+Virgil van Dijk,DF,2023-24,5,Raphaël Varane,Manchester United,DF,2023-24,91.7,True,True,31.1,20000000.0
+William Saliba,DF,2023-24,1,Rúben Dias,Manchester City,DF,2022-23,98.3,True,True,25.0,80000000.0
+William Saliba,DF,2023-24,2,Lewis Dunk,Brighton,DF,2022-23,96.3,True,True,30.0,16000000.0
+William Saliba,DF,2023-24,3,Nathan Aké,Manchester City,DF,2023-24,95.5,True,True,29.3,40000000.0
+William Saliba,DF,2023-24,4,John Stones,Manchester City,DM/WB,2022-23,94.0,False,True,28.0,40000000.0
+William Saliba,DF,2023-24,5,Ezri Konsa,Aston Villa,DF,2023-24,92.4,True,True,26.6,35000000.0
+Ruben Loftus-Cheek,DM/WB,2022-23,1,Ryan Gravenberch,Liverpool,CM,2023-24,84.4,False,True,22.0,35000000.0
+Ruben Loftus-Cheek,DM/WB,2022-23,2,Tom Cairney,Fulham,CM,2023-24,83.4,False,True,33.4,2000000.0
+Ruben Loftus-Cheek,DM/WB,2022-23,3,Mateo Kovačić,Chelsea,CM,2022-23,83.3,False,True,28.0,38000000.0
+Ruben Loftus-Cheek,DM/WB,2022-23,4,Reece James,Chelsea,DM/WB,2022-23,83.0,True,True,22.0,65000000.0
+Ruben Loftus-Cheek,DM/WB,2022-23,5,Tom Cairney,Fulham,CM,2022-23,82.6,False,True,31.0,2000000.0
+Micky van de Ven,DF,2023-24,1,Manuel Akanji,Manchester City,DM/WB,2023-24,87.3,False,True,28.9,45000000.0
+Micky van de Ven,DF,2023-24,2,Ben Davies,Tottenham Hotspur,DF,2023-24,86.9,True,True,31.1,10000000.0
+Micky van de Ven,DF,2023-24,3,Clément Lenglet,Tottenham Hotspur,DF,2022-23,85.7,True,True,27.0,10000000.0
+Micky van de Ven,DF,2023-24,4,Trevoh Chalobah,Chelsea,DF,2022-23,85.1,True,True,23.0,18000000.0
+Micky van de Ven,DF,2023-24,5,Manuel Akanji,Manchester City,DF,2022-23,83.9,True,True,27.0,38000000.0
+Trent Alexander-Arnold,DF,2023-24,1,Kieran Trippier,Newcastle United,DF,2022-23,93.6,True,True,31.0,11000000.0
+Trent Alexander-Arnold,DF,2023-24,2,Bruno Guimarães,Newcastle United,CM,2022-23,91.3,False,False,24.0,70000000.0
+Trent Alexander-Arnold,DF,2023-24,3,Youri Tielemans,Leicester City,CM,2022-23,89.3,False,False,25.0,25000000.0
+Trent Alexander-Arnold,DF,2023-24,4,Jordan Henderson,Liverpool,CM,2022-23,88.8,False,False,32.0,10000000.0
+Trent Alexander-Arnold,DF,2023-24,5,Andrew Robertson,Liverpool,DF,2023-24,88.7,True,True,30.2,30000000.0
+Kyle Walker,DF,2023-24,1,Oleksandr Zinchenko,Arsenal,DF,2022-23,90.6,True,True,25.0,42000000.0
+Kyle Walker,DF,2023-24,2,John Stones,Manchester City,DM/WB,2022-23,87.6,False,True,28.0,40000000.0
+Kyle Walker,DF,2023-24,3,Nathan Aké,Manchester City,DF,2023-24,87.3,True,True,29.3,40000000.0
+Kyle Walker,DF,2023-24,4,Levi Colwill,Brighton,DF,2022-23,85.4,True,True,19.0,35000000.0
+Kyle Walker,DF,2023-24,5,Nathan Aké,Manchester City,DF,2022-23,85.3,True,True,27.0,42000000.0
+Kieran Trippier,DF,2023-24,1,Philip Billing,Bournemouth,CM,2023-24,86.5,False,False,28.0,22000000.0
+Kieran Trippier,DF,2023-24,2,Mathias Jensen,Brentford,CM,2022-23,84.6,False,False,26.0,22000000.0
+Kieran Trippier,DF,2023-24,3,Pascal Groß,Brighton,DM/WB,2023-24,83.1,False,True,33.0,8000000.0
+Kieran Trippier,DF,2023-24,4,Trent Alexander-Arnold,Liverpool,DF,2023-24,82.3,True,True,25.6,70000000.0
+Kieran Trippier,DF,2023-24,5,Douglas Luiz,Aston Villa,CM,2022-23,82.3,False,False,24.0,40000000.0
+Rodrigo Bentancur,CM,2023-24,1,Pierre Højbjerg,Tottenham Hotspur,CM,2023-24,95.1,True,True,28.8,18000000.0
+Rodrigo Bentancur,CM,2023-24,2,Rúben Neves,Wolverhampton Wanderers,CM,2022-23,93.5,True,True,25.0,40000000.0
+Rodrigo Bentancur,CM,2023-24,3,Pape Matar Sarr,Tottenham Hotspur,CM,2023-24,93.1,True,True,21.7,45000000.0
+Rodrigo Bentancur,CM,2023-24,4,Thiago Alcántara,Liverpool,CM,2022-23,93.0,True,True,31.0,15000000.0
+Rodrigo Bentancur,CM,2023-24,5,Thomas Partey,Arsenal,CM,2022-23,91.0,True,True,29.0,35000000.0
+Declan Rice,CM,2023-24,1,Rodri,Manchester City,CM,2023-24,96.1,True,True,27.9,130000000.0
+Declan Rice,CM,2023-24,2,Rodri,Manchester City,CM,2022-23,96.0,True,True,26.0,90000000.0
+Declan Rice,CM,2023-24,3,Douglas Luiz,Aston Villa,CM,2022-23,95.4,True,True,24.0,40000000.0
+Declan Rice,CM,2023-24,4,Pape Matar Sarr,Tottenham Hotspur,CM,2023-24,95.2,True,True,21.7,45000000.0
+Declan Rice,CM,2023-24,5,Oleksandr Zinchenko,Arsenal,DF,2023-24,94.4,False,False,27.5,38000000.0
+Casemiro,DM/WB,2023-24,1,Marc Cucurella,Chelsea,DF,2023-24,89.8,False,True,25.9,30000000.0
+Casemiro,DM/WB,2023-24,2,Ryan Yates,Nottingham Forest,CM,2023-24,88.8,False,True,26.5,12000000.0
+Casemiro,DM/WB,2023-24,3,Marc Cucurella,Chelsea,DF,2022-23,87.2,False,True,24.0,35000000.0
+Casemiro,DM/WB,2023-24,4,Pedro Porro,Tottenham Hotspur,DF,2023-24,86.5,False,True,24.7,45000000.0
+Casemiro,DM/WB,2023-24,5,Tyrick Mitchell,Crystal Palace,DM/WB,2023-24,85.9,True,True,24.7,25000000.0
+Douglas Luiz,CM,2023-24,1,Pascal Groß,Brighton,DM/WB,2023-24,94.6,False,True,33.0,8000000.0
+Douglas Luiz,CM,2023-24,2,Granit Xhaka,Arsenal,CM,2022-23,93.6,True,True,29.0,20000000.0
+Douglas Luiz,CM,2023-24,3,İlkay Gündoğan,Manchester City,CM,2022-23,92.5,True,True,31.0,20000000.0
+Douglas Luiz,CM,2023-24,4,Rodri,Manchester City,CM,2023-24,91.4,True,True,27.9,130000000.0
+Douglas Luiz,CM,2023-24,5,Tom Cairney,Fulham,CM,2023-24,91.0,True,True,33.4,2000000.0
+Kevin De Bruyne,CM,2023-24,1,Bruno Fernandes,Manchester United,AM/W,2022-23,93.9,False,True,27.0,75000000.0
+Kevin De Bruyne,CM,2023-24,2,Morgan Gibbs-White,Nottingham Forest,AM/W,2023-24,93.5,False,True,24.3,40000000.0
+Kevin De Bruyne,CM,2023-24,3,Pablo Sarabia,Wolverhampton Wanderers,AM/W,2023-24,93.4,False,True,32.1,10000000.0
+Kevin De Bruyne,CM,2023-24,4,Dwight McNeil,Everton,AM/W,2023-24,93.2,False,True,24.5,22000000.0
+Kevin De Bruyne,CM,2023-24,5,Riyad Mahrez,Manchester City,AM/W,2022-23,91.2,False,True,31.0,20000000.0
+Gabriel Martinelli,FW,2023-24,1,Raheem Sterling,Chelsea,AM/W,2022-23,95.4,False,True,27.0,55000000.0
+Gabriel Martinelli,FW,2023-24,2,Kaoru Mitoma,Brighton,AM/W,2022-23,94.7,False,True,25.0,32000000.0
+Gabriel Martinelli,FW,2023-24,3,Anthony Gordon,Newcastle United,FW,2023-24,94.6,True,True,23.3,60000000.0
+Gabriel Martinelli,FW,2023-24,4,Bukayo Saka,Arsenal,FW,2022-23,94.4,True,True,20.0,120000000.0
+Gabriel Martinelli,FW,2023-24,5,Mykhailo Mudryk,Chelsea,FW,2023-24,94.2,True,True,23.4,35000000.0
+Bruno Guimarães,CM,2023-24,1,John McGinn,Aston Villa,AM/W,2023-24,94.0,False,True,29.6,30000000.0
+Bruno Guimarães,CM,2023-24,2,Tom Cairney,Fulham,CM,2023-24,92.5,True,True,33.4,2000000.0
+Bruno Guimarães,CM,2023-24,3,Rodri,Manchester City,CM,2023-24,92.0,True,True,27.9,130000000.0
+Bruno Guimarães,CM,2023-24,4,Conor Gallagher,Chelsea,CM,2023-24,92.0,True,True,24.3,50000000.0
+Bruno Guimarães,CM,2023-24,5,Enzo Fernández,Chelsea,CM,2022-23,91.6,True,True,21.0,80000000.0
+James Trafford,GK,2023-24,1,David Raya,Brentford,GK,2022-23,100.0,True,True,26.0,30000000.0
+James Trafford,GK,2023-24,2,Rui Patrício,Wolverhampton Wanderers,GK,2019-20,99.9,True,True,31.0,
+James Trafford,GK,2023-24,3,Emiliano Martínez,Aston Villa,GK,2020-21,99.9,True,True,27.0,35000000.0
+James Trafford,GK,2023-24,4,Aaron Ramsdale,Arsenal,GK,2021-22,99.9,True,True,23.0,28000000.0
+James Trafford,GK,2023-24,5,David Raya,Brentford,GK,2021-22,99.8,True,True,25.0,22000000.0
+Mohamed Salah,FW,2023-24,1,Bryan Mbeumo,Brentford,FW,2023-24,96.7,True,True,24.8,40000000.0
+Mohamed Salah,FW,2023-24,2,Kelechi Iheanacho,Leicester City,AM/W,2022-23,94.4,False,True,25.0,18000000.0
+Mohamed Salah,FW,2023-24,3,Bukayo Saka,Arsenal,FW,2023-24,94.4,True,True,22.7,140000000.0
+Mohamed Salah,FW,2023-24,4,Darwin Núñez,Liverpool,FW,2023-24,94.3,True,True,24.9,70000000.0
+Mohamed Salah,FW,2023-24,5,Ollie Watkins,Aston Villa,FW,2023-24,94.2,True,True,28.4,65000000.0
+Bukayo Saka,FW,2023-24,1,Cole Palmer,Chelsea,AM/W,2023-24,95.9,False,True,22.1,80000000.0
+Bukayo Saka,FW,2023-24,2,Anthony Gordon,Newcastle United,FW,2023-24,95.7,True,True,23.3,60000000.0
+Bukayo Saka,FW,2023-24,3,Mohamed Salah,Liverpool,FW,2023-24,94.4,True,True,32.0,55000000.0
+Bukayo Saka,FW,2023-24,4,Riyad Mahrez,Manchester City,FW,2021-22,94.1,True,True,30.0,35000000.0
+Bukayo Saka,FW,2023-24,5,Son Heung-min,Tottenham Hotspur,AM/W,2022-23,93.9,False,True,30.0,50000000.0
+Philip Billing,CM,2023-24,1,Fred,Manchester United,CM,2022-23,88.0,True,True,29.0,20000000.0
+Philip Billing,CM,2023-24,2,Kieran Trippier,Newcastle United,DF,2023-24,86.5,False,False,33.7,10000000.0
+Philip Billing,CM,2023-24,3,Kieran Trippier,Newcastle United,DF,2022-23,80.3,False,False,31.0,11000000.0
+Philip Billing,CM,2023-24,4,Mathias Jensen,Brentford,CM,2022-23,80.2,True,True,26.0,22000000.0
+Philip Billing,CM,2023-24,5,Ryan Christie,Bournemouth,CM,2023-24,78.9,True,True,29.3,12000000.0
+Jack Robinson,DF,2023-24,1,Joe Worrall,Nottingham Forest,DF,2022-23,92.8,True,True,25.0,12000000.0
+Jack Robinson,DF,2023-24,2,Moussa Niakhate,Nottingham Forest,DF,2022-23,91.1,True,True,26.0,18000000.0
+Jack Robinson,DF,2023-24,3,James Tarkowski,Burnley,DF,2018-19,90.9,True,True,25.0,18000000.0
+Jack Robinson,DF,2023-24,4,Auston Trusty,Sheffield United,DF,2023-24,90.4,True,True,25.8,7000000.0
+Jack Robinson,DF,2023-24,5,Anel Ahmedhodžić,Sheffield United,DF,2023-24,90.3,True,True,25.2,18000000.0
+Raheem Sterling,AM/W,2023-24,1,Mykhailo Mudryk,Chelsea,FW,2023-24,95.9,False,True,23.4,35000000.0
+Raheem Sterling,AM/W,2023-24,2,Kaoru Mitoma,Brighton,AM/W,2022-23,94.2,True,True,25.0,32000000.0
+Raheem Sterling,AM/W,2023-24,3,Gabriel Martinelli,Arsenal,FW,2023-24,93.9,False,True,23.0,70000000.0
+Raheem Sterling,AM/W,2023-24,4,Bukayo Saka,Arsenal,FW,2022-23,92.2,False,True,20.0,120000000.0
+Raheem Sterling,AM/W,2023-24,5,Diogo Jota,Wolverhampton Wanderers,AM/W,2018-19,91.8,True,True,21.0,35000000.0
+Ollie Watkins,FW,2023-24,1,Harry Kane,Tottenham Hotspur,FW,2020-21,97.6,True,True,27.0,120000000.0
+Ollie Watkins,FW,2023-24,2,Callum Wilson,Bournemouth,FW,2018-19,97.4,True,True,26.0,30000000.0
+Ollie Watkins,FW,2023-24,3,Diogo Jota,Liverpool,FW,2022-23,96.9,True,True,25.0,50000000.0
+Ollie Watkins,FW,2023-24,4,Mohamed Salah,Liverpool,FW,2021-22,95.9,True,True,29.0,90000000.0
+Ollie Watkins,FW,2023-24,5,Mohamed Salah,Liverpool,FW,2019-20,95.9,True,True,27.0,
+Alexander Isak,FW,2023-24,1,Pierre-Emerick Aubameyang,Arsenal,FW,2018-19,97.9,True,True,29.0,70000000.0
+Alexander Isak,FW,2023-24,2,Sergio Agüero,Manchester City,FW,2019-20,97.8,True,True,31.0,
+Alexander Isak,FW,2023-24,3,Anthony Martial,Manchester United,FW,2022-23,97.6,True,True,26.0,15000000.0
+Alexander Isak,FW,2023-24,4,Gabriel Jesus,Manchester City,FW,2017-18,97.2,True,True,20.0,80000000.0
+Alexander Isak,FW,2023-24,5,Alexandre Lacazette,Arsenal,FW,2017-18,96.9,True,True,26.0,60000000.0
+Dominic Calvert-Lewin,FW,2023-24,1,Patrick Bamford,Leeds United,FW,2022-23,96.6,True,True,28.0,9000000.0
+Dominic Calvert-Lewin,FW,2023-24,2,Beto,Everton,FW,2023-24,96.0,True,True,26.3,20000000.0
+Dominic Calvert-Lewin,FW,2023-24,3,Jean-Philippe Mateta,Crystal Palace,FW,2021-22,95.7,True,True,24.0,10000000.0
+Dominic Calvert-Lewin,FW,2023-24,4,Ivan Toney,Brentford,FW,2023-24,95.2,True,True,28.2,50000000.0
+Dominic Calvert-Lewin,FW,2023-24,5,Christian Benteke,Crystal Palace,FW,2021-22,94.8,True,True,30.0,5000000.0

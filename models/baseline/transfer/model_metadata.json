@@ -1,0 +1,55 @@
+{
+  "model_type": "XGBoost",
+  "target_transformation": "log1p",
+  "training_seasons": [
+    "2017/18",
+    "2018/19",
+    "2019/20",
+    "2020/21",
+    "2021/22"
+  ],
+  "validation_season": "2022/23",
+  "test_season": "2023/24",
+  "dataset_rows": {
+    "train": 22580,
+    "val": 5410,
+    "test": 5458
+  },
+  "feature_count": 18,
+  "transformed_feature_count": 38,
+  "features": [
+    "age",
+    "height_cm",
+    "contract_years_left",
+    "club_market_value_eur",
+    "minutes_played",
+    "appearances",
+    "goals",
+    "assists",
+    "yellow_cards",
+    "red_cards",
+    "goals_per90",
+    "assists_per90",
+    "shots_per90",
+    "npxg_per90",
+    "prev_market_value_eur",
+    "primary_position",
+    "sub_position",
+    "preferred_foot"
+  ],
+  "validation_metrics": {
+    "mae": 1560465.2247306781,
+    "mae_formatted": "\u20ac1.56M",
+    "rmse": 3969567.706440101,
+    "r2": 0.8966235651971188
+  },
+  "test_metrics": {
+    "mae": 1706977.3542706806,
+    "mae_formatted": "\u20ac1.71M",
+    "rmse": 4279568.71771387,
+    "rmse_formatted": "\u20ac4.28M",
+    "r2": 0.89859736101409,
+    "r2_formatted": "0.8986"
+  },
+  "training_timestamp": "2026-09-27T19:17:18.876299Z"
+}

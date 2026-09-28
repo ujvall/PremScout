@@ -1,0 +1,73 @@
+{
+  "model_version": "V1-Improved",
+  "architecture": "XGBoost + Sequential Elo",
+  "model_type": "XGBoost",
+  "model_architecture": "XGBoost Classifier + Sequential Pre-Match Elo Ratings & Parity Features",
+  "source_artifact": "models/improvement/match_outcome_model_improved.joblib",
+  "feature_count": 25,
+  "features": [
+    "home_rest_days",
+    "away_rest_days",
+    "home_rolling_points_5",
+    "away_rolling_points_5",
+    "home_rolling_gf_5",
+    "away_rolling_gf_5",
+    "home_rolling_ga_5",
+    "away_rolling_ga_5",
+    "home_rolling_shots_5",
+    "away_rolling_shots_5",
+    "home_rolling_sot_5",
+    "away_rolling_sot_5",
+    "home_rolling_sot_conceded_5",
+    "away_rolling_sot_conceded_5",
+    "home_rolling_corners_5",
+    "away_rolling_corners_5",
+    "home_rolling_win_pct_5",
+    "away_rolling_win_pct_5",
+    "home_league_rank",
+    "away_league_rank",
+    "rank_diff",
+    "home_ppg",
+    "away_ppg",
+    "h2h_matches_prior",
+    "h2h_home_win_pct"
+  ],
+  "train_seasons": [
+    "2017/18",
+    "2018/19",
+    "2019/20",
+    "2020/21",
+    "2021/22"
+  ],
+  "validation_season": "2022/23",
+  "test_season": "2023/24",
+  "split_counts": {
+    "train": 1900,
+    "val": 380,
+    "test": 380
+  },
+  "class_labels": [
+    "H",
+    "D",
+    "A"
+  ],
+  "validation_metrics": {
+    "accuracy": 0.5578947368421052,
+    "f1_macro": 0.4473159562192898,
+    "f1_weighted": 0.5114981024031245,
+    "log_loss": 0.9737278819084167,
+    "brier_score": 0.5787935486137992,
+    "draw_recall": 0.06896551724137931,
+    "draw_f1": 0.11428571428571428
+  },
+  "test_metrics": {
+    "accuracy": 0.5710526315789474,
+    "f1_macro": 0.4438848417757989,
+    "f1_weighted": 0.5167098418047913,
+    "log_loss": 0.9475704179373979,
+    "brier_score": 0.5564883445582314,
+    "draw_recall": 0.036585365853658534,
+    "draw_f1": 0.06451612903225806
+  },
+  "training_timestamp": "2026-09-28T16:12:00.000000Z"
+}

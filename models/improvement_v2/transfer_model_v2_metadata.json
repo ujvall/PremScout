@@ -1,0 +1,93 @@
+{
+  "model_type": "XGBoost + HistGradientBoosting Regressor Ensemble (V2 Champion)",
+  "weights": {
+    "xgb": 0.526,
+    "hgb": 0.474
+  },
+  "features": [
+    "age",
+    "height_cm",
+    "contract_years_left",
+    "club_market_value_eur",
+    "minutes_played",
+    "appearances",
+    "goals",
+    "assists",
+    "yellow_cards",
+    "red_cards",
+    "goals_per90",
+    "assists_per90",
+    "shots_per90",
+    "npxg_per90",
+    "prev_market_value_eur",
+    "minutes_per_appearance",
+    "cards_per90",
+    "age_x_minutes",
+    "age_x_goals",
+    "contract_x_prev_val",
+    "youth_starter_premium",
+    "veteran_depreciation",
+    "val_growth_pct",
+    "primary_position",
+    "sub_position",
+    "preferred_foot"
+  ],
+  "validation_metrics": {
+    "mae": 1530909.1414243313,
+    "rmse": 3916221.7932917112,
+    "r2": 0.8993833896368836,
+    "medae": 317476.1570909467,
+    "smape": 26.181698387722662
+  },
+  "test_metrics": {
+    "mae": 1696193.362885498,
+    "rmse": 4254845.855112759,
+    "r2": 0.8997655732205644,
+    "medae": 349846.78560380964,
+    "smape": 27.985471133578603,
+    "value_bands": {
+      "< \u20ac5M": {
+        "count": 3820,
+        "mae": 372392.2439441013,
+        "rmse": 649472.9814258107,
+        "medae": 170580.89938452706,
+        "smape": 26.599747814860397
+      },
+      "\u20ac5M\u2013\u20ac10M": {
+        "count": 632,
+        "mae": 1790373.4233600898,
+        "rmse": 2240553.2721148804,
+        "medae": 1539516.4750680379,
+        "smape": 30.106483216025755
+      },
+      "\u20ac10M\u2013\u20ac25M": {
+        "count": 610,
+        "mae": 3961413.5385192377,
+        "rmse": 4950562.798225317,
+        "medae": 3452569.7732314253,
+        "smape": 32.870740648399774
+      },
+      "\u20ac25M\u2013\u20ac50M": {
+        "count": 279,
+        "mae": 8506416.767324492,
+        "rmse": 10407553.622492533,
+        "medae": 7331067.1754742,
+        "smape": 32.02324577537337
+      },
+      "\u20ac50M\u2013\u20ac100M": {
+        "count": 98,
+        "mae": 13155359.48421878,
+        "rmse": 15877655.39918106,
+        "medae": 13298364.079329915,
+        "smape": 26.14724370052607
+      },
+      "> \u20ac100M": {
+        "count": 19,
+        "mae": 32883749.11396287,
+        "rmse": 35651702.46298626,
+        "medae": 34077402.32031381,
+        "smape": 29.38421854065501
+      }
+    }
+  }
+}

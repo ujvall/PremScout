@@ -1,0 +1,148 @@
+{
+  "model_type": "XGBoost Classifier (Improved Champion with Sequential Elo)",
+  "random_seed": 42,
+  "hyperparameters": {
+    "n_estimators": 150,
+    "max_depth": 4,
+    "learning_rate": 0.03,
+    "eval_metric": "mlogloss"
+  },
+  "features_count": 32,
+  "features": [
+    "home_rest_days",
+    "away_rest_days",
+    "home_rolling_points_5",
+    "away_rolling_points_5",
+    "home_rolling_gf_5",
+    "away_rolling_gf_5",
+    "home_rolling_ga_5",
+    "away_rolling_ga_5",
+    "home_rolling_shots_5",
+    "away_rolling_shots_5",
+    "home_rolling_sot_5",
+    "away_rolling_sot_5",
+    "home_rolling_sot_conceded_5",
+    "away_rolling_sot_conceded_5",
+    "home_rolling_corners_5",
+    "away_rolling_corners_5",
+    "home_rolling_win_pct_5",
+    "away_rolling_win_pct_5",
+    "home_league_rank",
+    "away_league_rank",
+    "rank_diff",
+    "home_ppg",
+    "away_ppg",
+    "h2h_matches_prior",
+    "h2h_home_win_pct",
+    "home_elo",
+    "away_elo",
+    "elo_diff",
+    "elo_exp_h",
+    "abs_elo_diff",
+    "abs_rank_diff",
+    "abs_ppg_diff"
+  ],
+  "engineered_elo_features": [
+    "home_elo",
+    "away_elo",
+    "elo_diff",
+    "elo_exp_h",
+    "abs_elo_diff",
+    "abs_rank_diff",
+    "abs_ppg_diff"
+  ],
+  "split_counts": {
+    "train": 1900,
+    "val": 380,
+    "test": 380
+  },
+  "validation_metrics": {
+    "accuracy": 0.5578947368421052,
+    "precision_macro": 0.48100567721005677,
+    "recall_macro": 0.48093957608351784,
+    "f1_macro": 0.4473159562192898,
+    "f1_weighted": 0.5114981024031245,
+    "log_loss": 0.9737278819084167,
+    "brier_score": 0.5787935486137992,
+    "roc_auc_ovr": 0.6558205375328585,
+    "confusion_matrix": [
+      [
+        138,
+        8,
+        38
+      ],
+      [
+        50,
+        6,
+        31
+      ],
+      [
+        37,
+        4,
+        68
+      ]
+    ],
+    "class_metrics": {
+      "H": {
+        "precision": 0.6133333333333333,
+        "recall": 0.75,
+        "f1": 0.6748166259168704
+      },
+      "D": {
+        "precision": 0.3333333333333333,
+        "recall": 0.06896551724137931,
+        "f1": 0.11428571428571428
+      },
+      "A": {
+        "precision": 0.49635036496350365,
+        "recall": 0.6238532110091743,
+        "f1": 0.5528455284552846
+      }
+    }
+  },
+  "test_metrics": {
+    "accuracy": 0.5710526315789474,
+    "precision_macro": 0.4732008849655909,
+    "recall_macro": 0.4842353852109949,
+    "f1_macro": 0.4438965699529918,
+    "f1_weighted": 0.5166962953006595,
+    "log_loss": 0.947618842124939,
+    "brier_score": 0.556543060502696,
+    "roc_auc_ovr": 0.6876017794170727,
+    "confusion_matrix": [
+      [
+        134,
+        7,
+        34
+      ],
+      [
+        45,
+        3,
+        34
+      ],
+      [
+        42,
+        1,
+        80
+      ]
+    ],
+    "class_metrics": {
+      "H": {
+        "precision": 0.6063348416289592,
+        "recall": 0.7657142857142857,
+        "f1": 0.6767676767676768
+      },
+      "D": {
+        "precision": 0.2727272727272727,
+        "recall": 0.036585365853658534,
+        "f1": 0.06451612903225806
+      },
+      "A": {
+        "precision": 0.5405405405405406,
+        "recall": 0.6504065040650406,
+        "f1": 0.5904059040590406
+      }
+    }
+  },
+  "timestamp": "2026-09-28T13:08:26.951789"
+}

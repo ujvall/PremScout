@@ -1,0 +1,185 @@
+{
+  "model_type": "XGBoost Regressor (Improved Champion)",
+  "target_transformation": "log1p",
+  "random_seed": 42,
+  "hyperparameters": {
+    "max_depth": 7,
+    "learning_rate": 0.03,
+    "n_estimators": 500,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 0.2,
+    "reg_lambda": 2.0,
+    "min_child_weight": 4
+  },
+  "features": {
+    "numerical": [
+      "age",
+      "height_cm",
+      "contract_years_left",
+      "club_market_value_eur",
+      "minutes_played",
+      "appearances",
+      "goals",
+      "assists",
+      "yellow_cards",
+      "red_cards",
+      "goals_per90",
+      "assists_per90",
+      "shots_per90",
+      "npxg_per90",
+      "prev_market_value_eur",
+      "minutes_per_appearance",
+      "cards_per90"
+    ],
+    "categorical": [
+      "primary_position",
+      "sub_position",
+      "preferred_foot"
+    ],
+    "engineered": [
+      "minutes_per_appearance",
+      "cards_per90"
+    ]
+  },
+  "dataset_rows": {
+    "train": 22580,
+    "val": 5410,
+    "test": 5458
+  },
+  "validation_metrics": {
+    "mae": 1541595.092337685,
+    "mae_formatted": "\u20ac1.542M",
+    "rmse": 3925300.486040987,
+    "rmse_formatted": "\u20ac3.925M",
+    "r2": 0.8989163445348988,
+    "median_absolute_error": 323478.34375,
+    "smape": 26.36731024661259,
+    "bucket_results": {
+      "< \u20ac10M": {
+        "count": 4451,
+        "mae": 571428.6275661368
+      },
+      "\u20ac10\u201330M": {
+        "count": 699,
+        "mae": 3917069.7342632334
+      },
+      "\u20ac30\u201360M": {
+        "count": 189,
+        "mae": 9375950.857142856
+      },
+      "\u20ac60\u2013100M": {
+        "count": 60,
+        "mae": 17845618.066666666
+      },
+      "> \u20ac100M": {
+        "count": 11,
+        "mae": 19616098.90909091
+      }
+    },
+    "age_results": {
+      "U21": {
+        "count": 551,
+        "mae": 2376694.917224365
+      },
+      "21-25": {
+        "count": 1763,
+        "mae": 2034703.914195441
+      },
+      "26-30": {
+        "count": 1983,
+        "mae": 1439353.6241174988
+      },
+      "31+": {
+        "count": 1112,
+        "mae": 529351.3662811938
+      }
+    },
+    "position_results": {
+      "Midfield": {
+        "count": 1578,
+        "mae": 1679990.3667567729
+      },
+      "Attack": {
+        "count": 1462,
+        "mae": 1779957.4662250984
+      },
+      "Goalkeeper": {
+        "count": 443,
+        "mae": 1045922.2094296699
+      },
+      "Defender": {
+        "count": 1927,
+        "mae": 1361371.715830955
+      }
+    }
+  },
+  "test_metrics": {
+    "mae": 1701777.6160044603,
+    "mae_formatted": "\u20ac1.702M",
+    "rmse": 4248293.084490732,
+    "rmse_formatted": "\u20ac4.248M",
+    "r2": 0.9000740720285223,
+    "median_absolute_error": 357221.8125,
+    "smape": 28.04781441451792,
+    "bucket_results": {
+      "< \u20ac10M": {
+        "count": 4452,
+        "mae": 575660.6175656657
+      },
+      "\u20ac10\u201330M": {
+        "count": 705,
+        "mae": 4493739.758865248
+      },
+      "\u20ac30\u201360M": {
+        "count": 228,
+        "mae": 9866304.564692982
+      },
+      "\u20ac60\u2013100M": {
+        "count": 54,
+        "mae": 13116908.962962963
+      },
+      "> \u20ac100M": {
+        "count": 19,
+        "mae": 31554952.842105262
+      }
+    },
+    "age_results": {
+      "U21": {
+        "count": 569,
+        "mae": 2899603.107384117
+      },
+      "21-25": {
+        "count": 1771,
+        "mae": 2215887.0034893774
+      },
+      "26-30": {
+        "count": 2010,
+        "mae": 1565496.2578630287
+      },
+      "31+": {
+        "count": 1107,
+        "mae": 512158.4072980183
+      }
+    },
+    "position_results": {
+      "Midfield": {
+        "count": 1577,
+        "mae": 1881521.5830839807
+      },
+      "Goalkeeper": {
+        "count": 449,
+        "mae": 1056490.5826924415
+      },
+      "Defender": {
+        "count": 1937,
+        "mae": 1479555.1468524134
+      },
+      "Attack": {
+        "count": 1495,
+        "mae": 1993899.7328072742
+      }
+    }
+  },
+  "timestamp": "2026-09-28T13:05:15.948814"
+}

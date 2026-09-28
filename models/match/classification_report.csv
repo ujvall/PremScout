@@ -1,0 +1,6 @@
+Class,Precision,Recall,F1,Support
+Home Win (H),0.5830,0.7829,0.6683,175
+Draw (D),0.1000,0.0122,0.0217,82
+Away Win (A),0.5481,0.6016,0.5736,123
+Macro Average,0.4104,0.4656,0.4212,380
+Weighted Average,0.4675,0.5579,0.4981,380

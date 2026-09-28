@@ -1,0 +1,55 @@
+{
+  "dataset_path": "data\\processed\\scouting\\player_scouting_dataset.csv",
+  "dataset_row_count": 2325,
+  "distinct_players_count": 925,
+  "features_used": [
+    "goals_per90",
+    "assists_per90",
+    "xG_per90",
+    "npxG_per90",
+    "xAG_per90",
+    "shots_per90",
+    "key_passes_per90",
+    "pass_completion_pct",
+    "progressive_passes_per90",
+    "progressive_carries_per90",
+    "successful_takeons_per90",
+    "tackles_won_per90",
+    "interceptions_per90",
+    "blocks_per90",
+    "clearances_per90",
+    "aerial_won_pct"
+  ],
+  "feature_count": 16,
+  "position_mapping": {
+    "GK": "GK",
+    "DF": "DF",
+    "DF,MF": "DM/WB",
+    "MF,DF": "DM/WB",
+    "DF,FW": "DM/WB",
+    "FW,DF": "DM/WB",
+    "MF": "CM",
+    "MF,FW": "AM/W",
+    "FW,MF": "AM/W",
+    "FW": "FW"
+  },
+  "preprocessing_method": "StandardScaler with median imputation",
+  "similarity_method": "Cosine similarity on standardized performance feature vectors",
+  "scaling_method": "StandardScaler (zero mean, unit variance)",
+  "filters_supported": [
+    "same_position_only",
+    "compatible_positions",
+    "max_market_value",
+    "max_age",
+    "min_minutes"
+  ],
+  "evaluation_metrics": {
+    "top_5_same_position_rate": 0.7095913978494623,
+    "top_10_same_position_rate": 0.7001720430107528,
+    "top_5_compatible_position_rate": 0.920516129032258,
+    "top_10_compatible_position_rate": 0.9099784946236559,
+    "position_mrr": 0.8124191841611197,
+    "multi_season_top_10_self_retrieval_rate": 0.45030737704918034
+  },
+  "training_timestamp": "2026-09-27T19:36:18.189592+00:00"
+}

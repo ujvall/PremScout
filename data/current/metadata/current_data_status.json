@@ -1,0 +1,28 @@
+{
+  "data_as_of": "2026-09-20",
+  "players_as_of": "2026-07-06",
+  "scouting_as_of": "2026-05-24",
+  "matches_as_of": "2026-09-20",
+  "transfers_as_of": "2026-06-12",
+  "retrieved_at": "2026-09-28T17:20:00Z",
+  "sources": [
+    {
+      "domain": "Transfermarkt",
+      "scope": "Player demographics, valuations, contracts, and transfers",
+      "max_data_date": "2026-07-06",
+      "coverage": "Premier League & European Big 5 through 2025/26 season"
+    },
+    {
+      "domain": "FBref / Sports Reference",
+      "scope": "Advanced player per-90 metrics (Standard, Shooting, Passing, Possession, Defense, Misc)",
+      "max_data_date": "2026-05-24",
+      "coverage": "Big 5 European Leagues through 2025/26 season (Season_End_Year 2026)"
+    },
+    {
+      "domain": "Football-Data.co.uk",
+      "scope": "Premier League match results, scores, shots, and corner stats",
+      "max_data_date": "2026-09-20",
+      "coverage": "2024/25 (380 matches), 2025/26 (380 matches), 2026/27 (50 matches through Matchweek 5)"
+    }
+  ]
+}

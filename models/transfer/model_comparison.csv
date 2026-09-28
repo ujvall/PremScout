@@ -1,0 +1,7 @@
+Model,Target Transform,Train MAE,Val MAE,Test MAE,Test RMSE,Test R²
+XGBoost,log1p,€1.19M,€1.56M,€1.71M,€4.28M,0.8986
+XGBoost,raw,€1.08M,€1.63M,€1.70M,€4.23M,0.9010
+Random Forest,log1p,€720.8K,€1.68M,€1.78M,€4.61M,0.8825
+Random Forest,raw,€729.0K,€1.72M,€1.74M,€4.33M,0.8960
+Linear Regression,raw,€2.23M,€2.26M,€2.19M,€4.77M,0.8742
+Linear Regression,log1p,€12.86M,€14.87M,€27.18M,€974.70M,-5259.0354

@@ -1,0 +1,20 @@
+model,metric,baseline_validation,improved_validation,baseline_test,improved_test,absolute_change,percentage_change
+Transfer Value Predictor,MAE (EUR),1560465.22,1541595.0,1706977.35,1701778.0,-5199.35,-0.3
+Transfer Value Predictor,RMSE (EUR),3969567.71,3925300.0,4279568.72,4248293.0,-31275.72,-0.73
+Transfer Value Predictor,R2 Score,0.8966,0.8989,0.8986,0.9001,0.0015,0.17
+Transfer Value Predictor,Median Absolute Error (EUR),335000.0,323478.0,368000.0,357222.0,-10778.0,-2.93
+Transfer Value Predictor,SMAPE (%),27.12,26.37,28.54,28.05,-0.49,-1.72
+Match Outcome Predictor,Accuracy,0.5526,0.5579,0.5579,0.5711,0.0132,2.37
+Match Outcome Predictor,Macro F1,0.4033,0.4473,0.4212,0.4439,0.0227,5.39
+Match Outcome Predictor,Weighted F1,0.4839,0.5115,0.4981,0.5167,0.0186,3.73
+Match Outcome Predictor,Log Loss,0.9882,0.9737,0.9536,0.9476,-0.006,-0.63
+Match Outcome Predictor,Brier Score,0.5872,0.5788,0.5615,0.5565,-0.005,-0.89
+Match Outcome Predictor,Draw Recall,0.0,0.069,0.0122,0.0366,0.0244,200.0
+Match Outcome Predictor,Draw F1,0.0,0.1143,0.0217,0.0645,0.0428,197.2
+Player Scouting Engine,Top-5 Same Position Rate,0.7096,0.7335,0.7096,0.7335,0.0239,3.37
+Player Scouting Engine,Top-10 Same Position Rate,0.7002,0.7206,0.7002,0.7206,0.0204,2.91
+Player Scouting Engine,Top-5 Compatible Position Rate,0.9205,0.9268,0.9205,0.9268,0.0063,0.68
+Player Scouting Engine,Top-10 Compatible Position Rate,0.91,0.9173,0.91,0.9173,0.0073,0.8
+Player Scouting Engine,Position MRR,0.8124,0.8344,0.8124,0.8344,0.022,2.71
+Player Scouting Engine,NDCG@5,0.921,0.9439,0.921,0.9439,0.0229,2.49
+Player Scouting Engine,NDCG@10,0.915,0.9376,0.915,0.9376,0.0226,2.47

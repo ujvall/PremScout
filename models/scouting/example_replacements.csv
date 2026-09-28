@@ -1,0 +1,26 @@
+target_player,target_position,candidate_player,candidate_club,candidate_position,similarity_score,position_compatibility,age,market_value_eur,minutes
+Declan Rice,CM,Rodri,Manchester City,CM,93.7,Same Position,27,130000000.0,2931
+Declan Rice,CM,Douglas Luiz,Aston Villa,CM,92.9,Same Position,24,40000000.0,2927
+Declan Rice,CM,Pape Matar Sarr,Tottenham Hotspur,CM,92.1,Same Position,21,45000000.0,2069
+Declan Rice,CM,Conor Gallagher,Chelsea,CM,90.2,Same Position,24,50000000.0,3128
+Declan Rice,CM,Bruno Guimarães,Newcastle United,CM,89.5,Same Position,24,70000000.0,2726
+Erling Haaland,FW,Callum Wilson,Newcastle United,FW,98.0,Same Position,30,16000000.0,1877
+Erling Haaland,FW,Tammy Abraham,Chelsea,FW,97.4,Same Position,21,,2215
+Erling Haaland,FW,Sergio Agüero,Manchester City,FW,96.9,Same Position,31,,1452
+Erling Haaland,FW,Pierre-Emerick Aubameyang,Arsenal,FW,96.6,Same Position,29,70000000.0,2726
+Erling Haaland,FW,Dominic Solanke,Bournemouth,FW,96.4,Same Position,26,40000000.0,3325
+Bukayo Saka,FW,Anthony Gordon,Newcastle United,FW,93.7,Same Position,23,60000000.0,2890
+Bukayo Saka,FW,Gabriel Martinelli,Arsenal,FW,92.7,Same Position,23,70000000.0,2019
+Bukayo Saka,FW,Mohamed Salah,Liverpool,FW,92.0,Same Position,32,55000000.0,2534
+Bukayo Saka,FW,Phil Foden,Manchester City,FW,91.3,Same Position,22,110000000.0,1842
+Bukayo Saka,FW,Bryan Mbeumo,Brentford,FW,89.3,Same Position,24,40000000.0,1960
+Virgil van Dijk,DF,Adam Webster,Brighton,DF,93.2,Same Position,29,20000000.0,1144
+Virgil van Dijk,DF,Lewis Dunk,Brighton,DF,92.8,Same Position,32,12000000.0,2869
+Virgil van Dijk,DF,Thiago Silva,Chelsea,DF,90.9,Same Position,37,2000000.0,2352
+Virgil van Dijk,DF,Raphaël Varane,Manchester United,DF,89.4,Same Position,31,20000000.0,1375
+Virgil van Dijk,DF,Cristian Romero,Tottenham Hotspur,DF,88.4,Same Position,26,65000000.0,2790
+Emiliano Martínez,GK,Caoimhín Kelleher,Liverpool,GK,99.9,Same Position,25,20000000.0,900
+Emiliano Martínez,GK,Jason Steele,Brighton,GK,99.9,Same Position,33,3500000.0,1530
+Emiliano Martínez,GK,Robert Sánchez,Chelsea,GK,99.9,Same Position,26,20000000.0,1433
+Emiliano Martínez,GK,Kepa Arrizabalaga,Chelsea,GK,99.9,Same Position,24,28000000.0,2970
+Emiliano Martínez,GK,Mathew Ryan,Brighton,GK,99.8,Same Position,27,,3420

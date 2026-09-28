@@ -1,0 +1,45 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Byte-compiled / optimized / C-extensions
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Environment & Secret files
+.env
+.env.*
+!.env.example
+
+# IDE configurations
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Data files (raw, processed, databases)
+data/raw/
+data/processed/
+data/database/
+*.db
+*.sqlite
+*.sqlite3
+
+# Model artifacts & checkpoints
+models/*.pkl
+models/*.joblib
+models/*.pt
+models/*.onnx
+*.pkl
+*.joblib
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Operating System files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,67 @@
+{
+  "model_version": "V2",
+  "architecture": "XGBoost + HistGradientBoosting Ensemble",
+  "model_type": "XGBoost",
+  "model_architecture": "XGBoost + HistGradientBoosting Regressor Convex Ensemble (52.6% XGB, 47.4% HGB)",
+  "source_artifact": "models/improvement_v2/transfer_value_model_v2.joblib",
+  "target_transformation": "log1p",
+  "training_seasons": [
+    "2017/18",
+    "2018/19",
+    "2019/20",
+    "2020/21",
+    "2021/22"
+  ],
+  "validation_season": "2022/23",
+  "test_season": "2023/24",
+  "dataset_rows": {
+    "train": 22580,
+    "val": 5410,
+    "test": 5458
+  },
+  "feature_count": 18,
+  "v2_feature_count": 26,
+  "features": [
+    "age",
+    "height_cm",
+    "contract_years_left",
+    "club_market_value_eur",
+    "minutes_played",
+    "appearances",
+    "goals",
+    "assists",
+    "yellow_cards",
+    "red_cards",
+    "goals_per90",
+    "assists_per90",
+    "shots_per90",
+    "npxg_per90",
+    "prev_market_value_eur",
+    "primary_position",
+    "sub_position",
+    "preferred_foot"
+  ],
+  "validation_metrics": {
+    "mae": 1530909.14,
+    "mae_formatted": "€1.53M",
+    "rmse": 3916221.79,
+    "rmse_formatted": "€3.92M",
+    "r2": 0.8994,
+    "r2_formatted": "0.8994",
+    "medae": 317476.16,
+    "medae_formatted": "€0.32M",
+    "smape": 26.18
+  },
+  "test_metrics": {
+    "mae": 1696193.36,
+    "mae_formatted": "€1.70M",
+    "rmse": 4254845.86,
+    "rmse_formatted": "€4.25M",
+    "r2": 0.8998,
+    "r2_formatted": "0.8998",
+    "medae": 349846.79,
+    "medae_formatted": "€0.35M",
+    "smape": 27.99
+  },
+  "training_timestamp": "2026-09-28T16:12:00.000000Z"
+}

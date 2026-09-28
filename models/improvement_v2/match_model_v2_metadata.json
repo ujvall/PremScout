@@ -1,0 +1,57 @@
+{
+  "champion_retained": "V1 (XGBoost with Sequential Pre-Match Elo & Parity Signals)",
+  "v2_experiments_summary": {
+    "poisson_hybrid_experiment": "Increasing draw weight with Poisson goal model degraded validation accuracy from 55.79% to 49.21% and inflated Log Loss to 1.0143.",
+    "tree_ensemble_blend": "Blending with Random Forest reduced validation Macro F1 from 0.4473 to 0.4186 and collapsed Draw Recall from 0.0690 to 0.0115.",
+    "elo_k_factor_tuning": "K=20.0 remained optimal over K=16.0, K=24.0, and K=28.0."
+  },
+  "decision": "KEEP V1 CHAMPION (Passed Phase 6 strict non-regression validation rule)",
+  "validation_benchmark": {
+    "accuracy": 0.5579,
+    "macro_f1": 0.4473,
+    "log_loss": 0.9737,
+    "brier_score": 0.5788,
+    "draw_recall": 0.069
+  },
+  "test_metrics": {
+    "accuracy": 0.5710526315789474,
+    "macro_f1": 0.4438965699529918,
+    "weighted_f1": 0.5166962953006595,
+    "log_loss": 0.947618842124939,
+    "brier_score": 0.556543060502696,
+    "class_metrics": {
+      "Home": {
+        "precision": 0.6063348416289592,
+        "recall": 0.7657142857142857,
+        "f1": 0.6767676767676768
+      },
+      "Draw": {
+        "precision": 0.2727272727272727,
+        "recall": 0.036585365853658534,
+        "f1": 0.06451612903225806
+      },
+      "Away": {
+        "precision": 0.5405405405405406,
+        "recall": 0.6504065040650406,
+        "f1": 0.5904059040590406
+      }
+    },
+    "confusion_matrix": [
+      [
+        134,
+        7,
+        34
+      ],
+      [
+        45,
+        3,
+        34
+      ],
+      [
+        42,
+        1,
+        80
+      ]
+    ]
+  }
+}

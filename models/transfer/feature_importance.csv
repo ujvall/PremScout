@@ -1,0 +1,39 @@
+feature,importance
+prev_market_value_eur,0.5778574347496033
+club_market_value_eur,0.1588028371334076
+age,0.0355219766497612
+minutes_played,0.03357287868857384
+goals,0.032941561192274094
+appearances,0.02823408879339695
+npxg_per90,0.023669928312301636
+contract_years_left,0.0170587170869112
+assists,0.014272620901465416
+yellow_cards,0.006781510077416897
+sub_position_Centre-Forward,0.005777532234787941
+primary_position_Goalkeeper,0.0056478227488696575
+sub_position_Goalkeeper,0.005611281376332045
+primary_position_Attack,0.005482344422489405
+goals_per90,0.004995141178369522
+sub_position_Centre-Back,0.003423042129725218
+sub_position_Attacking Midfield,0.003399305045604706
+sub_position_Defensive Midfield,0.0031746993772685528
+primary_position_Midfield,0.003136851591989398
+sub_position_Right-Back,0.0030253443401306868
+assists_per90,0.0028874462004750967
+sub_position_Left-Back,0.0027019300032407045
+primary_position_Defender,0.0023176176473498344
+height_cm,0.0022183237597346306
+red_cards,0.001961192348971963
+preferred_foot_left,0.0019473317079246044
+sub_position_Central Midfield,0.0018305256962776184
+sub_position_Left Winger,0.0018086900236085057
+preferred_foot_both,0.001679921057075262
+sub_position_Second Striker,0.0016319173155352473
+preferred_foot_right,0.0015932165551930666
+sub_position_Right Winger,0.00156061677262187
+preferred_foot_Unknown,0.001442448585294187
+sub_position_Left Midfield,0.0010371998650953174
+sub_position_Right Midfield,0.0009946934878826141
+shots_per90,0.0
+primary_position_Missing,0.0
+sub_position_Unknown,0.0

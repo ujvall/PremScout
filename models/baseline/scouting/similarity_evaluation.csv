@@ -1,0 +1,9 @@
+Metric,Value,Domain Benchmark
+Top-5 Same-Position Retrieval Rate,70.96%,High positional clustering
+Top-10 Same-Position Retrieval Rate,70.02%,High positional clustering
+Top-5 Compatible Position Rate,92.05%,Tactical adjacency preserved
+Top-10 Compatible Position Rate,91.00%,Tactical adjacency preserved
+Position Mean Reciprocal Rank (MRR),0.8124,First match at rank ~1
+Top-10 Temporal Self-Retrieval Rate,45.03%,Multi-season signature persistence
+Pairwise Cosine Similarity Mean,0.0095,Centered near orthogonal (0.0)
+Pairwise Cosine Similarity Median,-0.0062,Centered near orthogonal (0.0)
