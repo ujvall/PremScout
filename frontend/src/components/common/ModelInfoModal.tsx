@@ -96,7 +96,7 @@ export const ModelInfoModal: React.FC<ModelInfoModalProps> = ({
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <Cpu size={20} color="var(--accent-emerald)" />
+            <Cpu size={20} color="var(--accent-tea-green)" />
             <h3 style={{ fontSize: "1.25rem", margin: 0 }}>Active Model Specifications</h3>
           </div>
           <button
@@ -109,22 +109,22 @@ export const ModelInfoModal: React.FC<ModelInfoModalProps> = ({
           </button>
         </div>
 
-        {/* Tab switch */}
-        <div className="pill-nav" style={{ marginBottom: "1.5rem" }}>
+        {/* Tab switch — Squircle Segmented Navigation */}
+        <div className="segmented-nav" style={{ marginBottom: "1.5rem" }}>
           <button
-            className={`pill-item ${activeTab === "transfer" ? "active" : ""}`}
+            className={`segmented-nav-item ${activeTab === "transfer" ? "active" : ""}`}
             onClick={() => setActiveTab("transfer")}
           >
             Transfer Valuation
           </button>
           <button
-            className={`pill-item ${activeTab === "match" ? "active" : ""}`}
+            className={`segmented-nav-item ${activeTab === "match" ? "active" : ""}`}
             onClick={() => setActiveTab("match")}
           >
             Match Predictor
           </button>
           <button
-            className={`pill-item ${activeTab === "scouting" ? "active" : ""}`}
+            className={`segmented-nav-item ${activeTab === "scouting" ? "active" : ""}`}
             onClick={() => setActiveTab("scouting")}
           >
             Player Scouting
@@ -135,7 +135,7 @@ export const ModelInfoModal: React.FC<ModelInfoModalProps> = ({
         {loading && (
           <div style={{ padding: "2.5rem", textAlign: "center", color: "var(--text-muted)" }}>
             <div className="animate-spin" style={{ display: "inline-block", marginBottom: "0.5rem" }}>
-              <Layers size={24} color="var(--accent-emerald)" />
+              <Layers size={24} color="var(--accent-tea-green)" />
             </div>
             <p>Fetching verified backend model metadata...</p>
           </div>

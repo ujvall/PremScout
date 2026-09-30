@@ -183,6 +183,21 @@ export interface CandidateStats {
   interceptions_per90: number;
 }
 
+export interface RecentMatchItem {
+  date: string;
+  result: "W" | "D" | "L" | string;
+  goals: number;
+  assists: number;
+  minutes: number;
+}
+
+export interface RecentFormInfo {
+  season: string;
+  label: string;
+  matches: RecentMatchItem[];
+  summary: string;
+}
+
 export interface ReplacementCandidate {
   target_player: string;
   target_team: string;
@@ -200,7 +215,18 @@ export interface ReplacementCandidate {
   market_value_eur?: number | null;
   minutes: number;
   key_stats: CandidateStats;
+  recent_form?: RecentFormInfo | null;
   data_as_of?: string;
+  current_club?: string;
+  current_league?: string;
+  current_country?: string;
+  current_season?: string;
+  performance_club?: string;
+  performance_league?: string;
+  performance_season?: string;
+  is_current_big5?: boolean;
+  is_free_agent?: boolean;
+  eligibility_status?: string;
 }
 
 export interface ScoutingReplacementRequest {
@@ -210,6 +236,7 @@ export interface ScoutingReplacementRequest {
   max_market_value?: number | null;
   max_age?: number | null;
   min_minutes?: number | null;
+  include_free_agents?: boolean;
 }
 
 export interface PlayerSearchItem {
@@ -224,6 +251,13 @@ export interface PlayerSearchItem {
   data_as_of?: string;
   has_scouting_data?: boolean;
   is_current?: boolean;
+  current_club?: string;
+  current_league?: string;
+  current_league_id?: string;
+  eligibility_status?: string;
+  is_current_big5?: boolean;
+  is_free_agent?: boolean;
+  scouting_eligible?: boolean;
 }
 
 export interface ScoutingModelInfo {

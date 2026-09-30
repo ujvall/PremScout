@@ -318,21 +318,21 @@ export const TransferForm: React.FC<TransferFormProps> = ({ onSubmit, loading })
       >
         <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontSize: "0.8125rem", color: "var(--text-secondary)" }}>
-            <Sparkles size={14} color="var(--accent-emerald)" />
+            <Sparkles size={14} color="var(--accent-tea-green)" />
             <span>Current Player Presets:</span>
           </div>
           <span
             style={{
               fontSize: "0.6875rem",
-              color: "#38bdf8",
-              backgroundColor: "rgba(56, 189, 248, 0.12)",
-              border: "1px solid rgba(56, 189, 248, 0.3)",
-              borderRadius: "9999px",
+              color: "var(--accent-blue)",
+              backgroundColor: "var(--accent-blue-subtle)",
+              border: "1px solid rgba(56, 189, 248, 0.25)",
+              borderRadius: "var(--radius-xs)",
               padding: "0.1rem 0.45rem",
               fontWeight: 600,
             }}
           >
-            Data as of: 2026-09-20
+            Data: 2026-09-20
           </span>
         </div>
         <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
@@ -389,7 +389,7 @@ export const TransferForm: React.FC<TransferFormProps> = ({ onSubmit, loading })
         <div className="card-header">
           <div>
             <h4 className="card-title">
-              <User size={18} color="var(--accent-emerald)" />
+              <User size={18} color="var(--accent-tea-green)" />
               Player Demographics &amp; Role
             </h4>
             <p className="card-subtitle">Primary profile attributes and physical dimensions</p>
@@ -768,7 +768,7 @@ export const TransferForm: React.FC<TransferFormProps> = ({ onSubmit, loading })
         >
           {loading ? (
             <>
-              <div className="animate-spin" style={{ width: "16px", height: "16px", border: "2px solid #06281e", borderTopColor: "transparent", borderRadius: "50%" }} />
+              <div className="animate-spin" style={{ width: "16px", height: "16px", border: "2px solid #151515", borderTopColor: "transparent", borderRadius: "50%" }} />
               Predicting...
             </>
           ) : (

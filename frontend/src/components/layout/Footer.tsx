@@ -24,7 +24,7 @@ export const Footer: React.FC = () => {
       >
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.4rem" }}>
-            <Activity size={16} color="var(--accent-emerald)" />
+            <Activity size={16} color="var(--accent-tea-green)" />
             <span style={{ fontWeight: 700, fontSize: "0.9375rem", letterSpacing: "-0.02em" }}>
               PremAI Football Intelligence
             </span>

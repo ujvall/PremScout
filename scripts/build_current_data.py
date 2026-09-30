@@ -17,11 +17,23 @@ Strict Temporal & Production Integrity:
 from collections import defaultdict
 from dataclasses import dataclass
 import json
-import os
 from pathlib import Path
+import sys
 import unicodedata
+
+# Ensure repository root is on sys.path
+REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 import numpy as np
 import pandas as pd
+from backend.ml.scouting.eligibility import (
+    CurrentPlayerResolver,
+    LEAGUE_NAME_TO_COMP_ID,
+    CURRENT_BIG5_COMPETITION_IDS,
+    EligibilityState,
+)
 
 # Canonical team name mapping
 CANONICAL_TEAMS = {
@@ -187,6 +199,7 @@ def build_current_players_master():
     # Master table fields
     master_rows = []
     seen_ids = set()
+    resolver = CurrentPlayerResolver.get_instance()
 
     # Prioritize Premier League players first
     gb1_subset = df_active[df_active["current_club_domestic_competition_id"] == "GB1"]
@@ -203,6 +216,7 @@ def build_current_players_master():
         norm_name = row["norm_name"]
         club = row["canonical_club"]
         club_id = int(row["current_club_id"]) if pd.notna(row["current_club_id"]) else None
+        comp_id = str(row["current_club_domestic_competition_id"]).strip() if pd.notna(row["current_club_domestic_competition_id"]) else None
         dob_str = str(row["clean_dob"].date()) if pd.notna(row["clean_dob"]) else None
         age = int(row["age"])
         pos = row["position_clean"]
@@ -211,18 +225,46 @@ def build_current_players_master():
         season = row["season_label"]
         market_val = float(row["market_value_in_eur"]) if pd.notna(row["market_value_in_eur"]) else 0.0
 
+        # Current 2026 registration resolution
+        res = resolver.resolve(
+            player_id=pid,
+            player_name=p_name,
+            raw_club_id=club_id,
+            raw_club_name=club,
+            raw_competition_id=comp_id,
+        )
+
         master_rows.append({
             "player_id": pid,
             "player_name": p_name,
             "normalized_name": norm_name,
             "date_of_birth": dob_str,
             "age": age,
-            "club": club,
-            "club_id": club_id,
             "position": pos,
             "sub_position": sub_pos,
             "nationality": nat,
-            "season": season,
+            # Concept A: Performance Data
+            "performance_season": "2025-26",
+            "performance_club": res["current_club"],
+            "performance_league": res["current_league"],
+            # Concept B: Current Registration (2026/27 Source of Truth)
+            "current_season": res["current_season"],
+            "current_club": res["current_club"],
+            "current_club_id": res["current_club_id"],
+            "current_league": res["current_league"],
+            "current_league_id": res["current_league_id"],
+            "current_competition": res["current_competition"],
+            "current_country": res["current_country"],
+            "registration_status": res["registration_status"],
+            # Concept C: Scouting Eligibility
+            "eligibility_status": res["eligibility_status"],
+            "is_big5_current": res["is_big5_current"],
+            "is_free_agent": res["is_free_agent"],
+            "scouting_eligible": res["scouting_eligible"],
+            # Backward compatibility fields
+            "club": res["current_club"],
+            "club_id": res["current_club_id"],
+            "season": res["current_season"],
             "market_value_eur": market_val,
             "data_as_of": "2026-09-20",
             "source": "Transfermarkt & FBref (2025/26 - 2026/27)",
@@ -239,11 +281,11 @@ def build_current_players_master():
 
     # Quick verification on key players
     print("Verification of target test players in master:")
-    for query in ["rayan cherki", "erling haaland", "bukayo saka", "declan rice", "virgil van dijk", "emiliano martinez"]:
+    for query in ["rayan cherki", "erling haaland", "bukayo saka", "declan rice", "virgil van dijk", "emiliano martinez", "roberto firmino"]:
         match = master_df[master_df["normalized_name"] == query]
         if not match.empty:
             r = match.iloc[0]
-            print(f"  [FOUND] {r['player_name']} | Club: {r['club']} | Age: {r['age']} | Season: {r['season']} | Value: €{r['market_value_eur']/1e6:.1f}M")
+            print(f"  [FOUND] {r['player_name']} | Club: {r['current_club']} | League: {r['current_league']} ({r['current_league_id']}) | Status: {r['eligibility_status']} | Age: {r['age']} | Big5: {r['is_big5_current']}")
         else:
             print(f"  [MISSING] {query}")
 
@@ -260,12 +302,10 @@ def build_current_scouting_dataset(master_df: pd.DataFrame):
     def_df = pd.read_csv(scout_dir / "big5_player_defense.csv", low_memory=False)
     msc_df = pd.read_csv(scout_dir / "big5_player_misc.csv", low_memory=False)
 
-    # Use latest available seasons: 2026 (2025/26) and 2025 (2024/25)
-    # Filter for Premier League players or Big 5 targets
     join_keys = ["Url", "Season_End_Year", "Squad"]
 
     def prep_table(df):
-        sub = df[df["Season_End_Year"].isin([2025, 2026])].copy()
+        sub = df[df["Season_End_Year"].isin([2023, 2024, 2025, 2026])].copy()
         return sub.drop_duplicates(subset=join_keys)
 
     std_sub = prep_table(std_df)
@@ -292,36 +332,50 @@ def build_current_scouting_dataset(master_df: pd.DataFrame):
         on=join_keys, how="left"
     )
 
-    print(f"Merged 2025-2026 FBref records: {len(merged)}")
+    print(f"Merged FBref records: {len(merged)}")
 
     # Map master players for lookup: normalized_name -> master record
     master_lookup = {}
     for _, row in master_df.iterrows():
         master_lookup[row["normalized_name"]] = row
 
+    resolver = CurrentPlayerResolver.get_instance()
     scouting_rows = []
+
     for _, row in merged.iterrows():
         p_name = str(row.get("Player", "") or "").strip()
         norm_name = normalize_name(p_name)
         s_year = int(row["Season_End_Year"])
-        season_label = "2025-26" if s_year == 2026 else "2024-25"
+        perf_season_label = f"{s_year-1}-{str(s_year)[-2:]}"
         mins = safe_float(row.get("Min_Playing", 0.0))
 
         raw_pos = str(row.get("Pos", "MF") or "MF")
         norm_pos = POSITION_NORM_MAP.get(raw_pos, "CM")
+        perf_club = get_canonical_team(str(row.get("Squad", "")))
+        perf_league = str(row.get("Comp", "Premier League"))
 
-        # Resolve against master player info
+        # Resolve current 2026/27 registration
         m_rec = master_lookup.get(norm_name)
         if m_rec is not None:
-            canonical_club = m_rec["club"]
+            pid = m_rec["player_id"]
             age_val = m_rec["age"]
             m_val = m_rec["market_value_eur"]
-            player_id = m_rec["player_id"]
+            res = resolver.resolve(
+                player_id=pid,
+                player_name=p_name,
+                raw_club_id=m_rec["current_club_id"],
+                raw_club_name=m_rec["current_club"],
+                raw_competition_id=m_rec["current_league_id"],
+            )
         else:
-            canonical_club = get_canonical_team(str(row.get("Squad", "")))
-            age_val = 24
+            pid = None
+            age_val = calculate_age(row.get("Born"), "2026-09-20") if pd.notna(row.get("Born")) else 25
             m_val = 0.0
-            player_id = None
+            res = resolver.resolve(
+                player_name=p_name,
+                raw_club_name=perf_club,
+                raw_competition_id=LEAGUE_NAME_TO_COMP_ID.get(perf_league.lower(), "GB1"),
+            )
 
         gls = safe_float(row.get("Gls", 0.0))
         asts = safe_float(row.get("Ast", 0.0))
@@ -342,17 +396,32 @@ def build_current_scouting_dataset(master_df: pd.DataFrame):
         aerial_pct = safe_float(row.get("Won_percent_Aerial", 0.0))
 
         scouting_rows.append({
-            "player_id": player_id,
+            "player_id": pid,
             "player_name": p_name,
             "norm_name": norm_name,
-            "team": canonical_club,
-            "season": season_label,
-            "season_end_year": s_year,
             "position": raw_pos,
             "norm_pos": norm_pos,
             "age": age_val,
             "minutes_played": mins,
             "market_value_eur": m_val,
+            # Concept A: Performance Data
+            "performance_season": perf_season_label,
+            "performance_club": perf_club,
+            "performance_league": perf_league,
+            # Concept B: Current Registration (2026/27 Source of Truth)
+            "current_season": res["current_season"],
+            "current_club": res["current_club"],
+            "current_club_id": res["current_club_id"],
+            "current_league": res["current_league"],
+            "current_league_id": res["current_league_id"],
+            "current_competition": res["current_competition"],
+            "current_country": res["current_country"],
+            "registration_status": res["registration_status"],
+            # Concept C: Scouting Eligibility
+            "eligibility_status": res["eligibility_status"],
+            "is_big5_current": res["is_big5_current"],
+            "is_free_agent": res["is_free_agent"],
+            "scouting_eligible": res["is_big5_current"],
             # 16 Core Scouting Features
             "goals_per90": calculate_per90(gls, mins),
             "assists_per90": calculate_per90(asts, mins),
@@ -371,10 +440,14 @@ def build_current_scouting_dataset(master_df: pd.DataFrame):
             "clearances_per90": calculate_per90(clearances, mins),
             "aerial_won_pct": round(aerial_pct, 1),
             "data_as_of": "2026-09-20",
+            # Backward compatibility fields
+            "team": res["current_club"],
+            "season": res["current_season"],
+            "season_end_year": s_year,
         })
 
     scout_df = pd.DataFrame(scouting_rows)
-    # Sort by season_end_year descending so 2026 is prioritized over 2025
+    # Sort by season_end_year descending so latest performance season is prioritized
     scout_df = scout_df.sort_values(by=["season_end_year", "minutes_played"], ascending=[False, False])
     # Drop duplicates per player, keeping their latest season
     scout_df_latest = scout_df.drop_duplicates(subset=["norm_name"]).reset_index(drop=True)

@@ -6,7 +6,7 @@ import {
   Users,
   RefreshCw,
   Activity,
-  HelpCircle,
+  Sliders,
 } from "lucide-react";
 
 interface HeaderProps {
@@ -32,49 +32,50 @@ export const Header: React.FC<HeaderProps> = ({
     <header
       style={{
         borderBottom: "1px solid var(--border-subtle)",
-        backgroundColor: "rgba(9, 12, 16, 0.85)",
+        backgroundColor: "rgba(18, 19, 22, 0.92)",
         backdropFilter: "blur(12px)",
         position: "sticky",
         top: 0,
         zIndex: 50,
-        padding: "0.875rem 1.5rem",
+        padding: "0.625rem 1.5rem",
       }}
     >
       <div
         style={{
-          maxWidth: "1400px",
+          maxWidth: "1440px",
           margin: "0 auto",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           flexWrap: "wrap",
-          gap: "1rem",
+          gap: "0.75rem",
         }}
       >
         {/* Brand Left */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
           <div
             style={{
-              width: "36px",
-              height: "36px",
-              borderRadius: "10px",
-              background: "linear-gradient(135deg, #10b981 0%, #047857 100%)",
+              width: "32px",
+              height: "32px",
+              borderRadius: "var(--radius-md)",
+              backgroundColor: "var(--bg-elevated)",
+              border: "1px solid var(--border-medium)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              boxShadow: "0 0 15px rgba(16, 185, 129, 0.35)",
+              color: "var(--accent-tea-green)",
             }}
           >
-            <Activity size={20} color="#06281e" strokeWidth={2.5} />
+            <Activity size={18} strokeWidth={2.2} />
           </div>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <span
                 style={{
-                  fontSize: "1.1875rem",
-                  fontWeight: 800,
-                  letterSpacing: "-0.03em",
-                  color: "#ffffff",
+                  fontSize: "1.0625rem",
+                  fontWeight: 700,
+                  letterSpacing: "-0.025em",
+                  color: "var(--text-primary)",
                 }}
               >
                 PremAI
@@ -82,25 +83,24 @@ export const Header: React.FC<HeaderProps> = ({
               <span
                 style={{
                   fontSize: "0.6875rem",
-                  fontWeight: 700,
-                  backgroundColor: "rgba(16, 185, 129, 0.15)",
-                  color: "var(--accent-emerald-light)",
-                  border: "1px solid rgba(16, 185, 129, 0.3)",
-                  padding: "0.15rem 0.45rem",
-                  borderRadius: "9999px",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
+                  fontWeight: 600,
+                  color: "var(--text-secondary)",
+                  backgroundColor: "rgba(176, 192, 188, 0.08)",
+                  border: "1px solid var(--border-subtle)",
+                  padding: "0.1rem 0.4rem",
+                  borderRadius: "var(--radius-xs)",
+                  letterSpacing: "0.03em",
                 }}
               >
-                Intelligence
+                SCOUT
               </span>
             </div>
             <p
               style={{
-                fontSize: "0.75rem",
+                fontSize: "0.6875rem",
                 color: "var(--text-muted)",
                 margin: 0,
-                lineHeight: 1.2,
+                lineHeight: 1.1,
               }}
             >
               Premier League Predictive &amp; Scouting Engine
@@ -108,130 +108,124 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* Center: Segmented Pill Module Selector */}
-        <div className="pill-nav" role="tablist" aria-label="Main Module Selector">
+        {/* Center: Segmented Navigation Taskbar */}
+        <nav
+          className="segmented-nav"
+          role="tablist"
+          aria-label="Main Module Selector"
+        >
           <button
             role="tab"
             aria-selected={activeModule === "transfer"}
-            className={`pill-item ${activeModule === "transfer" ? "active" : ""}`}
+            className={`segmented-nav-item ${
+              activeModule === "transfer" ? "active" : ""
+            }`}
             onClick={() => onSelectModule("transfer")}
           >
-            <TrendingUp size={16} />
+            <TrendingUp size={15} />
             <span>Transfer Value</span>
           </button>
           <button
             role="tab"
             aria-selected={activeModule === "match"}
-            className={`pill-item ${activeModule === "match" ? "active" : ""}`}
+            className={`segmented-nav-item ${
+              activeModule === "match" ? "active" : ""
+            }`}
             onClick={() => onSelectModule("match")}
           >
-            <Swords size={16} />
+            <Swords size={15} />
             <span>Match Predictor</span>
           </button>
           <button
             role="tab"
             aria-selected={activeModule === "scouting"}
-            className={`pill-item ${activeModule === "scouting" ? "active" : ""}`}
+            className={`segmented-nav-item ${
+              activeModule === "scouting" ? "active" : ""
+            }`}
             onClick={() => onSelectModule("scouting")}
           >
-            <Users size={16} />
+            <Users size={15} />
             <span>Player Scouting</span>
           </button>
-        </div>
+        </nav>
 
-        {/* Right: API Status & Info */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-          {/* About Model Button */}
+        {/* Right: Cohesive Utility Bar */}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          {/* Model Specs Secondary Action */}
           <button
             onClick={onOpenModelInfo}
-            className="btn btn-ghost"
-            style={{
-              padding: "0.4rem 0.75rem",
-              fontSize: "0.8125rem",
-              gap: "0.35rem",
-            }}
-            title="Inspect active model specifications and training metrics"
+            className="btn btn-secondary btn-sm"
+            style={{ gap: "0.35rem" }}
+            title="Inspect active ML models and performance metrics"
           >
-            <HelpCircle size={15} />
+            <Sliders size={13} />
             <span className="hidden-mobile">Model Specs</span>
           </button>
 
-          {/* Latest Available Data Badge */}
+          {/* Latest Data Metadata */}
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "0.45rem",
-              padding: "0.35rem 0.75rem",
-              borderRadius: "9999px",
-              backgroundColor: "rgba(56, 189, 248, 0.1)",
-              border: "1px solid rgba(56, 189, 248, 0.25)",
+              gap: "0.4rem",
+              height: "32px",
+              padding: "0 0.625rem",
+              borderRadius: "var(--radius-btn)",
+              backgroundColor: "var(--bg-surface)",
+              border: "1px solid var(--border-subtle)",
+              fontSize: "0.75rem",
+              color: "var(--text-secondary)",
             }}
-            title="Player valuations, squad rosters, and match histories are synchronized through September 20, 2026."
+            title="Valuations, rosters, and match histories synchronized as of September 20, 2026"
           >
             <div
               style={{
-                width: "7px",
-                height: "7px",
+                width: "6px",
+                height: "6px",
                 borderRadius: "50%",
-                backgroundColor: "#38bdf8",
-                boxShadow: "0 0 8px #38bdf8",
+                backgroundColor: "var(--accent-blue)",
               }}
             />
-            <span
-              style={{
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                color: "#38bdf8",
-                letterSpacing: "0.01em",
-              }}
-            >
-              Latest available data: 2026-09-20
+            <span className="hidden-mobile">Data: </span>
+            <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>
+              2026-09-20
             </span>
           </div>
 
-          {/* Live Health Status */}
+          {/* Live API Health Status */}
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "0.5rem",
-              padding: "0.35rem 0.75rem",
-              borderRadius: "9999px",
-              backgroundColor: isHealthy
-                ? "rgba(16, 185, 129, 0.1)"
-                : "rgba(244, 63, 94, 0.1)",
-              border: `1px solid ${
-                isHealthy
-                  ? "rgba(16, 185, 129, 0.3)"
-                  : "rgba(244, 63, 94, 0.3)"
-              }`,
+              gap: "0.4rem",
+              height: "32px",
+              padding: "0 0.625rem",
+              borderRadius: "var(--radius-btn)",
+              backgroundColor: "var(--bg-surface)",
+              border: "1px solid var(--border-subtle)",
+              fontSize: "0.75rem",
             }}
           >
             <div
               style={{
-                width: "8px",
-                height: "8px",
+                width: "6px",
+                height: "6px",
                 borderRadius: "50%",
-                backgroundColor: isHealthy ? "#10b981" : "#f43f5e",
-                boxShadow: isHealthy
-                  ? "0 0 8px #10b981"
-                  : "0 0 8px #f43f5e",
+                backgroundColor: isHealthy ? "var(--success)" : "var(--error)",
               }}
               className={healthLoading ? "animate-pulse-slow" : ""}
             />
             <span
               style={{
-                fontSize: "0.75rem",
                 fontWeight: 600,
-                color: isHealthy ? "#34d399" : "#fb7185",
+                color: isHealthy ? "var(--success)" : "var(--error)",
               }}
             >
               {healthLoading
-                ? "Checking..."
+                ? "Connecting..."
                 : isHealthy
                 ? "API Connected"
-                : "API Offline"}
+                : "Offline"}
             </span>
 
             <button
@@ -246,7 +240,9 @@ export const Header: React.FC<HeaderProps> = ({
                 padding: "2px",
                 display: "flex",
                 alignItems: "center",
+                marginLeft: "2px",
               }}
+              aria-label="Refresh API connection status"
             >
               <RefreshCw
                 size={12}

@@ -27,9 +27,10 @@ router = APIRouter(prefix="/scouting", tags=["Player Scouting & Replacement"])
 def get_similar_players_endpoint(
     player_name: str = Path(..., description="Target player name"),
     top_n: int = Query(10, ge=1, le=50, description="Number of similar players to retrieve"),
+    include_free_agents: bool = Query(False, description="Whether to include verified free agents in candidate pool"),
 ) -> List[ReplacementCandidate]:
     """Retrieve top N statistically similar players."""
-    return get_similar_players_service(player_name=player_name, top_n=top_n)
+    return get_similar_players_service(player_name=player_name, top_n=top_n, include_free_agents=include_free_agents)
 
 
 @router.post(
@@ -52,9 +53,10 @@ def find_replacements_endpoint(request: ScoutingReplacementRequest) -> List[Repl
 def search_players_endpoint(
     search: Optional[str] = Query(None, description="Optional search substring to filter by player name or club"),
     limit: int = Query(50, ge=1, le=100, description="Maximum number of player records to return"),
+    include_free_agents: bool = Query(False, description="Whether to include verified free agents in search universe"),
 ) -> List[PlayerSearchItem]:
     """Search and browse players available in the scouting index."""
-    return search_players_service(search=search, limit=limit)
+    return search_players_service(search=search, limit=limit, include_free_agents=include_free_agents)
 
 
 @router.get(

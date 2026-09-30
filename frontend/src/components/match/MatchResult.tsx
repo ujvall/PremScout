@@ -107,7 +107,7 @@ export const MatchResult: React.FC<MatchResultProps> = ({ result, loading }) => 
               style={{
                 fontSize: "1.25rem",
                 fontWeight: 800,
-                color: isHomeWinner ? "var(--accent-emerald-light)" : "var(--text-primary)",
+                color: isHomeWinner ? "var(--accent-tea-green)" : "var(--text-primary)",
                 margin: 0,
               }}
             >
@@ -120,9 +120,10 @@ export const MatchResult: React.FC<MatchResultProps> = ({ result, loading }) => 
 
           <div
             style={{
-              padding: "0.35rem 0.75rem",
-              borderRadius: "var(--radius-full)",
+              padding: "0.25rem 0.625rem",
+              borderRadius: "var(--radius-xs)",
               backgroundColor: "var(--bg-elevated)",
+              border: "1px solid var(--border-subtle)",
               fontSize: "0.75rem",
               fontWeight: 700,
               color: "var(--text-muted)",
@@ -197,7 +198,7 @@ export const MatchResult: React.FC<MatchResultProps> = ({ result, loading }) => 
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <Award size={18} color="var(--accent-emerald)" />
+            <Award size={18} color="var(--accent-tea-green)" />
             <span style={{ fontSize: "0.8125rem", color: "var(--text-muted)" }}>Predicted Outcome</span>
           </div>
           <span
@@ -205,7 +206,7 @@ export const MatchResult: React.FC<MatchResultProps> = ({ result, loading }) => 
               fontWeight: 800,
               fontSize: "1rem",
               color: isHomeWinner
-                ? "var(--accent-emerald-light)"
+                ? "var(--accent-tea-green)"
                 : isDrawWinner
                 ? "var(--accent-amber)"
                 : "var(--accent-blue)",
@@ -224,8 +225,8 @@ export const MatchResult: React.FC<MatchResultProps> = ({ result, loading }) => 
           style={{
             padding: "1rem",
             textAlign: "center",
-            borderColor: isHomeWinner ? "rgba(16, 185, 129, 0.4)" : "var(--border-subtle)",
-            backgroundColor: isHomeWinner ? "rgba(16, 185, 129, 0.05)" : "var(--bg-card)",
+            borderColor: isHomeWinner ? "rgba(193, 237, 204, 0.4)" : "var(--border-subtle)",
+            backgroundColor: isHomeWinner ? "rgba(193, 237, 204, 0.05)" : "var(--bg-card)",
           }}
         >
           <span
@@ -234,7 +235,7 @@ export const MatchResult: React.FC<MatchResultProps> = ({ result, loading }) => 
               textTransform: "uppercase",
               fontWeight: 700,
               letterSpacing: "0.05em",
-              color: "var(--accent-emerald-light)",
+              color: "var(--accent-tea-green)",
             }}
           >
             HOME WIN

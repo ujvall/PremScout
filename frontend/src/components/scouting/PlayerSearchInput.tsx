@@ -7,12 +7,14 @@ interface PlayerSearchInputProps {
   selectedPlayer: PlayerSearchItem | null;
   onSelectPlayer: (player: PlayerSearchItem | null) => void;
   placeholder?: string;
+  includeFreeAgents?: boolean;
 }
 
 export const PlayerSearchInput: React.FC<PlayerSearchInputProps> = ({
   selectedPlayer,
   onSelectPlayer,
   placeholder = "Search player name (e.g. Declan Rice, Bukayo Saka, Rodri)...",
+  includeFreeAgents = false,
 }) => {
   const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState<PlayerSearchItem[]>([]);
@@ -35,7 +37,7 @@ export const PlayerSearchInput: React.FC<PlayerSearchInputProps> = ({
     const timer = setTimeout(async () => {
       setLoading(true);
       try {
-        const players = await searchPlayers(trimmed, 20);
+        const players = await searchPlayers(trimmed, 20, includeFreeAgents);
         if (isCurrent) {
           setResults(players);
           setIsOpen(true);
@@ -51,13 +53,13 @@ export const PlayerSearchInput: React.FC<PlayerSearchInputProps> = ({
           setLoading(false);
         }
       }
-    }, 250);
+    }, 220);
 
     return () => {
       isCurrent = false;
       clearTimeout(timer);
     };
-  }, [query]);
+  }, [query, includeFreeAgents]);
 
   // Click outside to close dropdown
   useEffect(() => {
@@ -115,7 +117,7 @@ export const PlayerSearchInput: React.FC<PlayerSearchInputProps> = ({
 
   return (
     <div ref={containerRef} className="autocomplete-container">
-      {/* If a player is selected, show compact summary card */}
+      {/* If a player is selected, show clean summary card */}
       {selectedPlayer ? (
         <div
           style={{
@@ -123,54 +125,46 @@ export const PlayerSearchInput: React.FC<PlayerSearchInputProps> = ({
             alignItems: "center",
             justifyContent: "space-between",
             padding: "0.75rem 1rem",
-            backgroundColor: "rgba(16, 185, 129, 0.08)",
-            border: "1px solid rgba(16, 185, 129, 0.3)",
+            backgroundColor: "var(--bg-elevated)",
+            border: "1px solid var(--border-medium)",
             borderRadius: "var(--radius-md)",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
             <div
               style={{
-                width: "36px",
-                height: "36px",
-                borderRadius: "50%",
-                backgroundColor: "var(--bg-elevated)",
+                width: "34px",
+                height: "34px",
+                borderRadius: "var(--radius-sm)",
+                backgroundColor: "var(--bg-card)",
+                border: "1px solid var(--border-subtle)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "var(--accent-emerald)",
+                color: "var(--accent-tea-green)",
               }}
             >
               <User size={18} />
             </div>
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
-                <span style={{ fontWeight: 700, fontSize: "1rem", color: "#ffffff" }}>
+                <span style={{ fontWeight: 700, fontSize: "0.9375rem", color: "var(--text-primary)" }}>
                   {selectedPlayer.player_name}
                 </span>
-                <span className="badge badge-emerald">
+                <span className="tag-position">
                   {selectedPlayer.position || selectedPlayer.normalized_position}
                 </span>
-                <span
-                  style={{
-                    fontSize: "0.6875rem",
-                    color: "#38bdf8",
-                    backgroundColor: "rgba(56, 189, 248, 0.12)",
-                    border: "1px solid rgba(56, 189, 248, 0.3)",
-                    borderRadius: "9999px",
-                    padding: "0.1rem 0.45rem",
-                    fontWeight: 600,
-                  }}
-                >
-                  Data as of: {selectedPlayer.data_as_of || "2026-09-20"}
-                </span>
+                {selectedPlayer.is_free_agent && (
+                  <span className="badge badge-amber">
+                    Free Agent
+                  </span>
+                )}
               </div>
-              <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", margin: "0.2rem 0 0" }}>
-                Club: <strong style={{ color: "var(--text-secondary)" }}>{selectedPlayer.club}</strong> |
-                Season: {selectedPlayer.season}
-                {selectedPlayer.age ? ` | Age: ${selectedPlayer.age}` : ""}
-                {selectedPlayer.market_value_eur
-                  ? ` | Val: €${(selectedPlayer.market_value_eur / 1e6).toFixed(1)}M`
+              <p style={{ fontSize: "0.75rem", color: "var(--text-secondary)", margin: "0.15rem 0 0" }}>
+                {selectedPlayer.current_club || selectedPlayer.club} • {selectedPlayer.current_league || (selectedPlayer.is_free_agent ? "Free Agent" : "—")}
+                {selectedPlayer.age ? ` • Age ${selectedPlayer.age}` : ""}
+                {selectedPlayer.market_value_eur && selectedPlayer.market_value_eur > 0
+                  ? ` • €${(selectedPlayer.market_value_eur / 1e6).toFixed(1)}M`
                   : ""}
               </p>
             </div>
@@ -179,12 +173,12 @@ export const PlayerSearchInput: React.FC<PlayerSearchInputProps> = ({
           <button
             type="button"
             onClick={handleClear}
-            className="btn btn-ghost"
-            style={{ padding: "0.35rem 0.5rem", fontSize: "0.75rem", gap: "0.25rem" }}
+            className="btn btn-secondary btn-sm"
+            style={{ padding: "0 0.625rem", height: "30px", gap: "0.3rem" }}
             title="Choose a different player"
             aria-label="Change selected player"
           >
-            <X size={14} />
+            <X size={13} />
             <span>Change</span>
           </button>
         </div>
@@ -237,7 +231,7 @@ export const PlayerSearchInput: React.FC<PlayerSearchInputProps> = ({
                 style={{
                   width: "14px",
                   height: "14px",
-                  border: "2px solid var(--accent-emerald)",
+                  border: "2px solid var(--accent-tea-green)",
                   borderTopColor: "transparent",
                   borderRadius: "50%",
                 }}
@@ -250,6 +244,11 @@ export const PlayerSearchInput: React.FC<PlayerSearchInputProps> = ({
             <div className="autocomplete-dropdown animate-fade-in" role="listbox">
               {results.map((item, idx) => {
                 const isHighlighted = idx === highlightedIndex;
+                const marketVal =
+                  item.market_value_eur && item.market_value_eur > 0
+                    ? `€${(item.market_value_eur / 1e6).toFixed(1)}M`
+                    : null;
+
                 return (
                   <div
                     key={`${item.player_name}-${item.season}`}
@@ -263,27 +262,36 @@ export const PlayerSearchInput: React.FC<PlayerSearchInputProps> = ({
                     onMouseEnter={() => setHighlightedIndex(idx)}
                   >
                     <div>
-                      <span style={{ fontWeight: 600, fontSize: "0.875rem", color: "#ffffff" }}>
-                        {item.player_name}
-                      </span>
-                      <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "2px" }}>
-                        {item.club} • {item.season}
-                        {item.age ? ` • Age ${item.age}` : ""}
-                        <span style={{ marginLeft: "0.5rem", color: "#38bdf8", fontSize: "0.6875rem", opacity: 0.85 }}>
-                          (Data as of: {item.data_as_of || "2026-09-20"})
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                        <span style={{ fontWeight: 600, fontSize: "0.875rem", color: "var(--text-primary)" }}>
+                          {item.player_name}
                         </span>
+                        <span className="tag-position">
+                          {item.position || item.normalized_position}
+                        </span>
+                        {item.is_free_agent && (
+                          <span className="badge badge-amber" style={{ fontSize: "0.625rem" }}>
+                            Free Agent
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)", marginTop: "2px" }}>
+                        {item.current_club || item.club} • {item.current_league || (item.is_free_agent ? "Free Agent" : "—")}
+                        {item.age ? ` • Age ${item.age}` : ""}
                       </div>
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                      <span className="badge badge-blue">
-                        {item.position || item.normalized_position}
+                    {marketVal && (
+                      <span
+                        style={{
+                          fontSize: "0.8125rem",
+                          fontWeight: 600,
+                          fontFamily: "var(--font-mono)",
+                          color: "var(--text-primary)",
+                        }}
+                      >
+                        {marketVal}
                       </span>
-                      {item.market_value_eur ? (
-                        <span style={{ fontSize: "0.75rem", fontFamily: "var(--font-mono)", color: "var(--text-secondary)" }}>
-                          €{(item.market_value_eur / 1e6).toFixed(1)}M
-                        </span>
-                      ) : null}
-                    </div>
+                    )}
                   </div>
                 );
               })}
@@ -293,9 +301,14 @@ export const PlayerSearchInput: React.FC<PlayerSearchInputProps> = ({
           {isOpen && query.trim().length >= 2 && results.length === 0 && !loading && (
             <div
               className="autocomplete-dropdown"
-              style={{ padding: "1rem", textAlign: "center", color: "var(--text-muted)", fontSize: "0.8125rem" }}
+              style={{
+                padding: "1rem",
+                textAlign: "center",
+                color: "var(--text-muted)",
+                fontSize: "0.8125rem",
+              }}
             >
-              No players found matching "{query}". Try a different spelling or surname.
+              No eligible scouting candidates found matching "{query}".
             </div>
           )}
         </div>

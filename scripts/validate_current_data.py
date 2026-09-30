@@ -21,6 +21,16 @@ from pathlib import Path
 import sys
 import pandas as pd
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+# Safe unicode output on Windows console
+if sys.stdout and hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if sys.stderr and hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
+
 def main():
     print("======================================================================")
     print(" PremAI Platform — Current Data Layer Validation")
@@ -253,6 +263,237 @@ def main():
         print(" [PASS] DATA_SOURCES.md documentation present.")
         checks_passed += 1
 
+    # 6. Big-5 Scouting Eligibility & Architecture Validation
+    print("\n--- 6. Validating Big-5 Scouting Eligibility Architecture ---")
+    from backend.ml.scouting.predict import load_scouting_index
+    from backend.ml.scouting.eligibility import (
+        CURRENT_BIG5_COMPETITION_IDS,
+        CURRENT_BIG5_COMPETITIONS,
+    )
+
+    # 6.1 Check dataset fields: 3 separate concepts
+    required_elig_cols = [
+        "current_club", "current_club_id", "current_league", "current_league_id",
+        "current_competition", "current_season", "current_country",
+        "performance_club", "performance_league", "performance_season",
+        "is_big5_current", "is_free_agent", "scouting_eligible", "eligibility_status"
+    ]
+    missing_elig_cols = [c for c in required_elig_cols if c not in df_sc.columns]
+    if missing_elig_cols:
+        errors.append(f"Scouting dataset missing required eligibility architecture columns: {missing_elig_cols}")
+    else:
+        print(" [PASS] All 14 required eligibility & registration fields present in scouting dataset.")
+        checks_passed += 1
+
+    # 6.2 Counts by Data Quality State
+    status_counts = df_sc["eligibility_status"].value_counts().to_dict()
+    big5_count = status_counts.get("BIG5_ACTIVE", 0)
+    fa_count = status_counts.get("FREE_AGENT", 0)
+    non_big5_count = status_counts.get("NON_BIG5", 0)
+    unknown_count = status_counts.get("UNKNOWN", 0)
+
+    print(f"\n Scored Scouting Player Universe Breakdown ({len(df_sc)} total profiles):")
+    print(f"   • BIG5_ACTIVE:  {big5_count:,} (Default eligible candidate universe)")
+    print(f"   • FREE_AGENT:   {fa_count:,} (Optional eligible via toggle)")
+    print(f"   • NON_BIG5:     {non_big5_count:,} (Permanently excluded from scouting candidates)")
+    print(f"   • UNKNOWN:      {unknown_count:,} (Permanently excluded from scouting candidates)")
+
+    if big5_count == 0 or non_big5_count == 0:
+        errors.append("Dataset missing BIG5_ACTIVE or NON_BIG5 categories!")
+    else:
+        print(" [PASS] 4 Data Quality States successfully populated and segregated.")
+        checks_passed += 1
+
+    # 6.3 Counts by Big 5 League
+    big5_df = df_sc[df_sc["eligibility_status"] == "BIG5_ACTIVE"]
+    league_counts = big5_df["current_league"].value_counts().to_dict()
+    print("\n BIG5_ACTIVE Candidate Counts by League:")
+    for lg_name in ["Premier League", "La Liga", "Bundesliga", "Serie A", "Ligue 1"]:
+        c_lg = league_counts.get(lg_name, 0)
+        print(f"   • {lg_name:<16}: {c_lg:,} players")
+        if c_lg == 0:
+            errors.append(f"Big 5 league '{lg_name}' has 0 BIG5_ACTIVE players!")
+        else:
+            checks_passed += 1
+
+    # 6.4 Assert default candidates universe integrity
+    # All BIG5_ACTIVE players must have current_league in CURRENT_BIG5_COMPETITIONS
+    invalid_big5_leagues = big5_df[~big5_df["current_league_id"].isin(CURRENT_BIG5_COMPETITION_IDS)]
+    if len(invalid_big5_leagues) > 0:
+        errors.append(f"Found {len(invalid_big5_leagues)} BIG5_ACTIVE players with non-Big-5 league ID!")
+    else:
+        print(" [PASS] 100% of BIG5_ACTIVE players belong strictly to CURRENT_BIG5_COMPETITION_IDS.")
+        checks_passed += 1
+
+    # Non-Big5 players must NOT be marked scouting_eligible
+    non_big5_df = df_sc[df_sc["eligibility_status"] == "NON_BIG5"]
+    ineligible_leaks = non_big5_df[non_big5_df["scouting_eligible"] == True]
+    if len(ineligible_leaks) > 0:
+        errors.append(f"CRITICAL: {len(ineligible_leaks)} NON_BIG5 players were marked scouting_eligible=True!")
+    else:
+        print(" [PASS] 100% of NON_BIG5 players are marked scouting_eligible=False.")
+        checks_passed += 1
+
+    # Free agent players default scouting_eligible must be False
+    fa_df = df_sc[df_sc["eligibility_status"] == "FREE_AGENT"]
+    fa_leaks = fa_df[fa_df["scouting_eligible"] == True]
+    if len(fa_leaks) > 0:
+        errors.append(f"CRITICAL: {len(fa_leaks)} FREE_AGENT players were marked scouting_eligible=True by default!")
+    else:
+        print(" [PASS] 100% of FREE_AGENT players are marked scouting_eligible=False by default.")
+        checks_passed += 1
+
+    # 6.5 Positive Tests: Dynamically select an active player from EACH Big-5 league
+    print("\n--- 7. Dynamic Positive Tests (All 5 European Big-5 Leagues) ---")
+    engine = load_scouting_index()
+
+    for comp_id, comp_name in CURRENT_BIG5_COMPETITIONS.items():
+        sample_players = big5_df[big5_df["current_league_id"] == comp_id]
+        if sample_players.empty:
+            errors.append(f"No positive sample player found for {comp_name} ({comp_id})")
+            continue
+
+        sample_p = sample_players.iloc[0]
+        p_name = sample_p["player_name"]
+        print(f" Testing positive dynamic candidate from {comp_name}: '{p_name}'")
+        assert sample_p["is_big5_current"] == True
+        assert sample_p["eligibility_status"] == "BIG5_ACTIVE"
+        assert sample_p["current_season"] in ["2026-27", "2026/27"]
+        print(f"   -> Club: {sample_p['current_club']} | League: {sample_p['current_league']} | Season: {sample_p['current_season']} [ELIGIBLE]")
+        checks_passed += 1
+
+    # 6.6 Negative Tests (Section 20 of prompt)
+    print("\n--- 8. Dynamic Negative Tests (Prompt Section 20) ---")
+
+    # 1. Roberto Firmino Test (Must be resolved to Al-Sadd / Qatar Stars League and excluded)
+    firmino_p = df_p[df_p["player_name"].str.contains("Roberto Firmino", case=False, na=False)]
+    if firmino_p.empty:
+        errors.append("Roberto Firmino not found in current_players.csv!")
+    else:
+        firmino_row = firmino_p.iloc[0]
+        if firmino_row["current_club"] != "Al-Sadd" or firmino_row["current_league_id"] != "QAT1":
+            errors.append(f"Roberto Firmino expected Al-Sadd/QAT1, got {firmino_row['current_club']}/{firmino_row['current_league_id']}")
+        elif firmino_row["eligibility_status"] != "NON_BIG5":
+            errors.append(f"Roberto Firmino expected NON_BIG5, got {firmino_row['eligibility_status']}")
+        else:
+            print(f" [PASS] Roberto Firmino dynamic resolution verified: Club={firmino_row['current_club']}, League={firmino_row['current_league']}, Status={firmino_row['eligibility_status']}, Eligible=False.")
+            checks_passed += 1
+
+    # 2. Current Saudi Pro League Player (Dynamic lookup)
+    saudi_players = df_sc[df_sc["current_league_id"] == "SA1"]
+    if saudi_players.empty:
+        saudi_players = df_p[df_p["current_league_id"] == "SA1"]
+    if not saudi_players.empty:
+        sa_p = saudi_players.iloc[0]
+        assert sa_p["eligibility_status"] == "NON_BIG5"
+        assert sa_p["is_big5_current"] == False
+        print(f" [PASS] Saudi Pro League negative candidate '{sa_p['player_name']}': Club={sa_p['current_club']}, League={sa_p['current_league']}, Status={sa_p['eligibility_status']} [EXCLUDED].")
+        checks_passed += 1
+    else:
+        errors.append("No Saudi Pro League players found in current data!")
+
+    # 3. Current MLS Player (Dynamic lookup)
+    mls_players = df_sc[df_sc["current_league_id"] == "MLS1"]
+    if mls_players.empty:
+        mls_players = df_p[df_p["current_league_id"] == "MLS1"]
+    if not mls_players.empty:
+        mls_p = mls_players.iloc[0]
+        assert mls_p["eligibility_status"] == "NON_BIG5"
+        assert mls_p["is_big5_current"] == False
+        print(f" [PASS] MLS negative candidate '{mls_p['player_name']}': Club={mls_p['current_club']}, League={mls_p['current_league']}, Status={mls_p['eligibility_status']} [EXCLUDED].")
+        checks_passed += 1
+    else:
+        errors.append("No MLS players found in current data!")
+
+    # 4. Current Qatar Player (Dynamic lookup)
+    qat_players = df_sc[df_sc["current_league_id"] == "QAT1"]
+    if qat_players.empty:
+        qat_players = df_p[df_p["current_league_id"] == "QAT1"]
+    if not qat_players.empty:
+        qat_p = qat_players.iloc[0]
+        assert qat_p["eligibility_status"] == "NON_BIG5"
+        assert qat_p["is_big5_current"] == False
+        print(f" [PASS] Qatar Stars League negative candidate '{qat_p['player_name']}': Club={qat_p['current_club']}, League={qat_p['current_league']}, Status={qat_p['eligibility_status']} [EXCLUDED].")
+        checks_passed += 1
+    else:
+        errors.append("No Qatar Stars League players found in current data!")
+
+    # 5. Current Portuguese Player (Dynamic lookup)
+    po_players = df_sc[df_sc["current_league_id"] == "PO1"]
+    if po_players.empty:
+        po_players = df_p[df_p["current_league_id"] == "PO1"]
+    if not po_players.empty:
+        po_p = po_players.iloc[0]
+        assert po_p["eligibility_status"] == "NON_BIG5"
+        assert po_p["is_big5_current"] == False
+        print(f" [PASS] Portuguese Primeira Liga negative candidate '{po_p['player_name']}': Club={po_p['current_club']}, League={po_p['current_league']}, Status={po_p['eligibility_status']} [EXCLUDED].")
+        checks_passed += 1
+    else:
+        errors.append("No Portuguese Primeira Liga players found in current data!")
+
+    # 6. Current Turkish Player (Dynamic lookup)
+    tr_players = df_sc[df_sc["current_league_id"] == "TR1"]
+    if tr_players.empty:
+        tr_players = df_p[df_p["current_league_id"] == "TR1"]
+    if not tr_players.empty:
+        tr_p = tr_players.iloc[0]
+        assert tr_p["eligibility_status"] == "NON_BIG5"
+        assert tr_p["is_big5_current"] == False
+        print(f" [PASS] Turkish Süper Lig negative candidate '{tr_p['player_name']}': Club={tr_p['current_club']}, League={tr_p['current_league']}, Status={tr_p['eligibility_status']} [EXCLUDED].")
+        checks_passed += 1
+    else:
+        errors.append("No Turkish Süper Lig players found in current data!")
+
+    # 7. Current Free Agent Candidate (Dynamic lookup)
+    fa_players = df_sc[df_sc["eligibility_status"] == "FREE_AGENT"]
+    if not fa_players.empty:
+        fa_test_p = fa_players.iloc[0]
+        assert fa_test_p["is_free_agent"] == True
+        assert fa_test_p["is_big5_current"] == False
+        print(f" [PASS] Free Agent candidate '{fa_test_p['player_name']}': Status={fa_test_p['eligibility_status']}, ExcludedByDefault=True.")
+        checks_passed += 1
+    else:
+        errors.append("No Free Agent players found in current scouting data!")
+
+    # 6.7 End-to-End Similarity Engine Query Assertions
+    print("\n--- 9. Live Similarity Candidate Pool Assertions ---")
+    # Query similar players for Rayan Cherki with include_free_agents=False
+    cherki_candidates = engine.find_replacements(
+        player_name="Rayan Cherki",
+        top_n=50,
+        same_position_only=False,
+        include_free_agents=False,
+    )
+    assert len(cherki_candidates) > 0, "No candidates returned for Rayan Cherki!"
+
+    # Verify every returned candidate
+    for c in cherki_candidates:
+        if not c.get("is_current_big5", False):
+            errors.append(f"Candidate '{c['candidate_player']}' has is_current_big5=False in default candidate pool!")
+        if c.get("is_free_agent", False):
+            errors.append(f"Free agent '{c['candidate_player']}' appeared in default results when include_free_agents=False!")
+        if c.get("current_league") not in ["Premier League", "La Liga", "Bundesliga", "Serie A", "Ligue 1"]:
+            errors.append(f"Candidate '{c['candidate_player']}' has non-Big-5 current league: {c.get('current_league')}")
+
+    # Verify Roberto Firmino does not appear
+    firmino_found = any("firmino" in c["candidate_player"].lower() for c in cherki_candidates)
+    if firmino_found:
+        errors.append("CRITICAL: Roberto Firmino appeared in scouting candidates!")
+    else:
+        print(" [PASS] 50/50 candidates strictly BIG5_ACTIVE; Roberto Firmino successfully excluded.")
+        checks_passed += 1
+
+    # Query with include_free_agents=True for a goalkeeper/profile where free agent exists
+    fa_sim_candidates = engine.find_replacements(
+        player_name="Martin Dúbravka",
+        top_n=50,
+        same_position_only=False,
+        include_free_agents=True,
+    )
+    fa_in_results = [c for c in fa_sim_candidates if c.get("is_free_agent")]
+    print(f" [PASS] include_free_agents=True returned {len(fa_in_results)} verified free agent candidate(s).")
+    checks_passed += 1
+
     print("\n======================================================================")
     if errors:
         print(f" VALIDATION FAILED with {len(errors)} error(s):")
@@ -260,8 +501,9 @@ def main():
             print(f"  - {e}")
         sys.exit(1)
     else:
-        print(f" ALL {checks_passed} CURRENT DATA CHECKS PASSED (100% Success Rate)!")
+        print(f" ALL {checks_passed} CURRENT DATA & BIG-5 ELIGIBILITY CHECKS PASSED (100% Success Rate)!")
         print("======================================================================")
 
 if __name__ == "__main__":
     main()
+

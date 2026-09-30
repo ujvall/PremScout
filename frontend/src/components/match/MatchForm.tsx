@@ -450,7 +450,7 @@ export const MatchForm: React.FC<MatchFormProps> = ({ onSubmit, loading }) => {
         <div className="card-header">
           <div>
             <h4 className="card-title">
-              <TrendingUp size={18} color="var(--accent-emerald)" />
+              <TrendingUp size={18} color="var(--accent-tea-green)" />
               Recent Form (5-Match Rolling Statistics)
             </h4>
             <p className="card-subtitle">Performance volume and momentum leading into the fixture</p>
@@ -464,11 +464,11 @@ export const MatchForm: React.FC<MatchFormProps> = ({ onSubmit, loading }) => {
             style={{
               padding: "1rem",
               borderRadius: "var(--radius-md)",
-              backgroundColor: "rgba(16, 185, 129, 0.04)",
-              border: "1px solid rgba(16, 185, 129, 0.15)",
+              backgroundColor: "rgba(193, 237, 204, 0.05)",
+              border: "1px solid rgba(193, 237, 204, 0.2)",
             }}
           >
-            <h5 style={{ fontSize: "0.875rem", color: "var(--accent-emerald-light)", marginBottom: "0.75rem" }}>
+            <h5 style={{ fontSize: "0.875rem", color: "var(--accent-tea-green)", marginBottom: "0.75rem" }}>
               {formData.home_team} (Home Form)
             </h5>
 
@@ -869,7 +869,7 @@ export const MatchForm: React.FC<MatchFormProps> = ({ onSubmit, loading }) => {
           <div className="card-header">
             <div>
               <h4 className="card-title">
-                <Calendar size={18} color="var(--accent-emerald)" />
+                <Calendar size={18} color="var(--accent-tea-green)" />
                 Rest &amp; Recovery
               </h4>
               <p className="card-subtitle">Calendar days elapsed since each club's last match (0 - 60)</p>
@@ -925,7 +925,7 @@ export const MatchForm: React.FC<MatchFormProps> = ({ onSubmit, loading }) => {
         >
           {loading ? (
             <>
-              <div className="animate-spin" style={{ width: "16px", height: "16px", border: "2px solid #06281e", borderTopColor: "transparent", borderRadius: "50%" }} />
+              <div className="animate-spin" style={{ width: "16px", height: "16px", border: "2px solid #151515", borderTopColor: "transparent", borderRadius: "50%" }} />
               Predicting...
             </>
           ) : (

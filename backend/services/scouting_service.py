@@ -70,19 +70,34 @@ def _get_player_catalog() -> List[Dict[str, Any]]:
             for _, row in df_curr.iterrows():
                 p_name = str(row["player_name"])
                 norm_name = str(row.get("normalized_name") or _normalize_search_string(p_name))
+                c_club = str(row.get("current_club") or row["club"])
+                c_league = str(row.get("current_league") or "Premier League")
+                elig = str(row.get("eligibility_status") or "BIG5_ACTIVE")
+                is_b5 = bool(row.get("is_big5_current", True))
+                is_fa = bool(row.get("is_free_agent", False))
+                sc_elig = bool(row.get("scouting_eligible", is_b5))
+
                 catalog.append({
                     "player_name": p_name,
                     "normalized_name": norm_name,
                     "player_id": str(row["player_id"]) if pd.notna(row.get("player_id")) else None,
                     "position": str(row.get("position", "Midfield")),
                     "normalized_position": str(row.get("position", "Midfield")),
-                    "club": str(row["club"]),
+                    "club": c_club,
                     "season": str(row["season"]),
                     "age": int(row["age"]) if pd.notna(row.get("age")) else None,
                     "market_value_eur": float(row["market_value_eur"]) if pd.notna(row.get("market_value_eur")) else None,
                     "data_as_of": str(row.get("data_as_of", "2026-09-20")),
                     "has_scouting_data": bool(row.get("has_scouting_data", False)),
                     "is_current": True,
+                    # Registration & Eligibility
+                    "current_club": c_club,
+                    "current_league": c_league,
+                    "eligibility_status": elig,
+                    "is_big5_current": is_b5,
+                    "is_current_big5": is_b5,
+                    "is_free_agent": is_fa,
+                    "scouting_eligible": sc_elig,
                 })
         else:
             # Fallback to model's historical index dataframe
@@ -105,6 +120,13 @@ def _get_player_catalog() -> List[Dict[str, Any]]:
                     "data_as_of": "2024-05-19",
                     "has_scouting_data": True,
                     "is_current": False,
+                    "current_club": str(row["team"]),
+                    "current_league": "Premier League",
+                    "eligibility_status": "BIG5_ACTIVE",
+                    "is_big5_current": True,
+                    "is_current_big5": True,
+                    "is_free_agent": False,
+                    "scouting_eligible": True,
                 })
         _CACHED_PLAYER_CATALOG = catalog
 
@@ -120,25 +142,41 @@ PREMIER_LEAGUE_CLUBS = {
 }
 
 
-def search_players_service(search: Optional[str] = None, limit: int = 50) -> List[PlayerSearchItem]:
+def search_players_service(
+    search: Optional[str] = None,
+    limit: int = 50,
+    include_free_agents: bool = False,
+) -> List[PlayerSearchItem]:
     """Search available players in the scouting catalog by name or club substring.
 
-    Supports normalized accents, hyphens, and partial matches across current players.
-    Prioritizes exact full-name matches, exact token/surname matches, Premier League clubs,
-    and active scouting coverage.
+    Dynamically restricts search results to the eligible scouting universe:
+    - Default: BIG5_ACTIVE only.
+    - With include_free_agents=True: BIG5_ACTIVE + FREE_AGENT.
+    - NON_BIG5 and UNKNOWN are strictly excluded.
 
     Args:
         search: Optional search query string (case-insensitive).
         limit: Maximum number of records to return (capped at 100).
+        include_free_agents: Whether to include verified free agents in search universe.
 
     Returns:
         List of lightweight PlayerSearchItem records.
     """
     limit = max(1, min(limit, 100))
-    catalog = _get_player_catalog()
+    full_catalog = _get_player_catalog()
+
+    # Filter catalog strictly to eligible scouting universe:
+    # Default: BIG5_ACTIVE only
+    # With toggle ON: BIG5_ACTIVE + FREE_AGENT
+    # NON_BIG5 and UNKNOWN are strictly excluded
+    if not include_free_agents:
+        catalog = [item for item in full_catalog if item.get("eligibility_status") == "BIG5_ACTIVE"]
+    else:
+        catalog = [item for item in full_catalog if item.get("eligibility_status") in ("BIG5_ACTIVE", "FREE_AGENT")]
 
     def sort_key(x):
         return (
+            x.get("is_big5_current", False),
             x.get("club") in PREMIER_LEAGUE_CLUBS,
             x.get("has_scouting_data", False),
             x.get("market_value_eur") or 0.0,
@@ -195,18 +233,24 @@ def search_players_service(search: Optional[str] = None, limit: int = 50) -> Lis
     return results
 
 
-def get_similar_players_service(player_name: str, top_n: int = 10) -> List[ReplacementCandidate]:
+def get_similar_players_service(player_name: str, top_n: int = 10, include_free_agents: bool = False) -> List[ReplacementCandidate]:
     """Retrieve top N statistically similar players across compatible positions.
 
     Args:
         player_name: Target player name.
         top_n: Number of candidates to return.
+        include_free_agents: Whether to include verified free agents.
 
     Returns:
         List of ReplacementCandidate models.
     """
     try:
-        raw_candidates = get_similar_players(player_name=player_name, top_n=top_n, model_path=SCOUTING_MODEL_PATH)
+        raw_candidates = get_similar_players(
+            player_name=player_name,
+            top_n=top_n,
+            include_free_agents=include_free_agents,
+            model_path=SCOUTING_MODEL_PATH,
+        )
         return [_map_candidate(c) for c in raw_candidates]
     except ValueError as e:
         err_msg = str(e)
@@ -237,6 +281,7 @@ def find_replacements_service(request: ScoutingReplacementRequest) -> List[Repla
             max_market_value=request.max_market_value,
             max_age=request.max_age,
             min_minutes=request.min_minutes,
+            include_free_agents=request.include_free_agents,
             model_path=SCOUTING_MODEL_PATH,
         )
         return [_map_candidate(c) for c in raw_candidates]
@@ -245,7 +290,6 @@ def find_replacements_service(request: ScoutingReplacementRequest) -> List[Repla
         if "not found in scouting database" in err_msg.lower():
             raise HTTPException(status_code=404, detail=f"Player '{request.player_name}' was not found.")
         if "no eligible replacement candidates found" in err_msg.lower():
-            # Return empty list rather than 500 error when candidate filters are too strict
             logger.info(f"Zero candidates found for {request.player_name} with strict filters.")
             return []
         raise HTTPException(status_code=422, detail=err_msg)
@@ -283,6 +327,16 @@ def _map_candidate(c: Dict[str, Any]) -> ReplacementCandidate:
         candidate_position=c["candidate_position"],
         candidate_raw_position=c["candidate_raw_position"],
         candidate_season=c["candidate_season"],
+        # Required Concept B & Concept C fields
+        current_club=c.get("current_club", c["candidate_club"]),
+        current_league=c.get("current_league", "Premier League"),
+        current_country=c.get("current_country", "England"),
+        current_season=c.get("current_season", "2026-27"),
+        performance_club=c.get("performance_club", c["candidate_club"]),
+        performance_league=c.get("performance_league", c.get("current_league", "Premier League")),
+        performance_season=c.get("performance_season", "2025-26"),
+        is_current_big5=bool(c.get("is_current_big5", True)),
+        is_free_agent=bool(c.get("is_free_agent", False)),
         similarity_score=c["similarity_score"],
         cosine_similarity=c["cosine_similarity"],
         position_compatibility=c["position_compatibility"],
@@ -301,5 +355,6 @@ def _map_candidate(c: Dict[str, Any]) -> ReplacementCandidate:
             tackles_won_per90=stats.get("tackles_won_per90", 0.0),
             interceptions_per90=stats.get("interceptions_per90", 0.0),
         ),
+        recent_form=c.get("recent_form"),
         data_as_of=c.get("data_as_of", "2026-09-20"),
     )

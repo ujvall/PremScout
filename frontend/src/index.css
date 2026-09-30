@@ -1,49 +1,84 @@
 @charset "UTF-8";
 
 /* ============================================================================
-   PremAI Football Intelligence Platform — Design System Tokens & Global Styles
+   PremAI Football Intelligence Platform — Centralized Palette & Design System
+   Exact Reference Palette:
+     #151515 — Onyx (Page Background & Deep Dark Contrasts)
+     #C1EDCC — Tea Green (Primary Brand Accent, Buttons, Active Highlights)
+     #B0C0BC — Ash Grey (Secondary Typography & Clean Sub-borders)
+     #A7A7A9 — Pale Slate (Neutral Borders, Dividers & Minor Meta)
+     #797270 — Dim Grey (Muted Text, Disabled States & Placeholders)
    ============================================================================ */
 
 :root {
-  /* Color Palette: Dark-First Sports Analytics */
-  --bg-app: #090c10;
-  --bg-surface: #0e131b;
-  --bg-card: #141a24;
-  --bg-card-hover: #19212f;
-  --bg-elevated: #1f2839;
-  --bg-input: #121822;
+  /* 1. Core Surfaces (Onyx #151515 Foundation) */
+  --bg-app: #151515;            /* Pure Onyx from palette */
+  --bg-surface: #1a1c20;        /* Restrained dark surface */
+  --bg-card: #202227;           /* Main card container */
+  --bg-card-hover: #262930;     /* Interactive card hover */
+  --bg-elevated: #2a2d35;       /* Elevated dialogs, popovers, tabs */
+  --bg-input: #17181c;          /* Text input field background */
 
-  --border-subtle: rgba(255, 255, 255, 0.07);
-  --border-medium: rgba(255, 255, 255, 0.12);
-  --border-active: rgba(16, 185, 129, 0.5);
+  /* 2. Restrained Borders (Ash Grey #B0C0BC & Pale Slate #A7A7A9) */
+  --border-subtle: rgba(176, 192, 188, 0.16);  /* Subtle Ash Grey boundary */
+  --border-medium: rgba(176, 192, 188, 0.28);  /* Noticeable border */
+  --border-active: #c1edcc;                    /* Active border: Tea Green */
+  --border-slate: #a7a7a9;                     /* Pale Slate divider */
 
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  /* 3. Typography Hierarchy */
+  --text-primary: #f5f6f8;                     /* High-contrast readable white */
+  --text-secondary: #b0c0bc;                   /* Ash Grey from palette */
+  --text-muted: #797270;                       /* Dim Grey from palette */
+  --text-slate: #a7a7a9;                       /* Pale Slate from palette */
 
-  --accent-emerald: #10b981;
-  --accent-emerald-light: #34d399;
-  --accent-emerald-glow: rgba(16, 185, 129, 0.15);
+  /* 4. Primary Accent — Tea Green #C1EDCC */
+  --accent-tea-green: #c1edcc;
+  --accent-tea-green-hover: #ade2ba;
+  --accent-tea-green-active: #9cdbaa;
+  --accent-tea-green-subtle: rgba(193, 237, 204, 0.14);
+  --accent-tea-green-border: rgba(193, 237, 204, 0.35);
 
+  /* Primary Accent Aliases (mapped directly to Tea Green) */
+  --accent-primary: #c1edcc;
+  --accent-primary-hover: #ade2ba;
+  --accent-primary-text: #151515;              /* Onyx text on Tea Green button */
+  --accent-emerald: #c1edcc;
+  --accent-emerald-light: #c1edcc;
+  --accent-emerald-subtle: rgba(193, 237, 204, 0.14);
+
+  /* Secondary Accents */
   --accent-blue: #38bdf8;
-  --accent-blue-glow: rgba(56, 189, 248, 0.15);
+  --accent-blue-subtle: rgba(56, 189, 248, 0.12);
 
   --accent-amber: #f59e0b;
-  --accent-rose: #f43f5e;
+  --accent-amber-subtle: rgba(245, 158, 11, 0.12);
 
-  /* Typography */
+  --accent-rose: #f43f5e;
+  --accent-rose-subtle: rgba(244, 63, 94, 0.12);
+
+  /* 5. Semantic Feedback */
+  --success: #c1edcc;                          /* Tea Green indicates success */
+  --warning: #fbbf24;
+  --error: #f87171;
+  --focus-ring: rgba(193, 237, 204, 0.35);
+
+  /* 6. Typography Fonts */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Layout & Radii */
+  /* 7. Squircle Corner Language */
+  --radius-xs: 4px;
   --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-full: 9999px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-btn: 8px;                           /* Squircles on buttons */
+  --radius-pill: 9999px;                       /* Strictly for compact tags */
 
-  /* Shadows */
-  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
-  --shadow-elevated: 0 10px 30px -4px rgba(0, 0, 0, 0.6);
+  /* 8. Subtle Visual Depth */
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-card: 0 4px 16px -2px rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 10px 25px -4px rgba(0, 0, 0, 0.5);
 }
 
 /* Base Reset */
@@ -68,7 +103,7 @@ body {
   background-color: var(--bg-app);
 }
 
-/* Typography Helpers */
+/* Typography Hierarchy */
 h1, h2, h3, h4, h5, h6 {
   color: var(--text-primary);
   font-weight: 700;
@@ -81,7 +116,7 @@ p, span, label {
 
 /* App Container */
 .app-container {
-  max-width: 1400px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 0 1.5rem 3rem 1.5rem;
 }
@@ -99,7 +134,7 @@ p, span, label {
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   box-shadow: var(--shadow-card);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .card:hover {
@@ -128,7 +163,7 @@ p, span, label {
   margin-top: 0.25rem;
 }
 
-/* Form Controls */
+/* Form Controls — Consistent Squircle Corners */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -147,20 +182,21 @@ p, span, label {
 
 .form-input, .form-select {
   width: 100%;
+  height: 38px;
   background-color: var(--bg-input);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   color: var(--text-primary);
-  padding: 0.625rem 0.875rem;
+  padding: 0 0.875rem;
   font-size: 0.875rem;
   font-family: inherit;
-  transition: all 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
   outline: none;
 }
 
 .form-input:focus, .form-select:focus {
-  border-color: var(--accent-emerald);
-  box-shadow: 0 0 0 3px var(--accent-emerald-glow);
+  border-color: var(--accent-tea-green);
+  box-shadow: 0 0 0 3px var(--focus-ring);
   background-color: var(--bg-surface);
 }
 
@@ -168,36 +204,62 @@ p, span, label {
   color: var(--text-muted);
 }
 
-/* Buttons */
+input[type="checkbox"] {
+  accent-color: var(--accent-tea-green);
+}
+
+/* ============================================================================
+   Buttons — Squircle System with Tea Green #C1EDCC Primary Button
+   ============================================================================ */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.625rem 1.25rem;
+  height: 38px;
+  padding: 0 1.125rem;
   font-size: 0.875rem;
   font-weight: 600;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-btn);
   cursor: pointer;
   border: 1px solid transparent;
-  transition: all 0.15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
   user-select: none;
   font-family: inherit;
   text-decoration: none;
+  white-space: nowrap;
 }
 
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn-sm {
+  height: 32px;
+  padding: 0 0.75rem;
+  font-size: 0.8125rem;
+}
+
+/* Primary Button: #C1EDCC (Tea Green) with #151515 (Onyx) Text */
 .btn-primary {
-  background-color: var(--accent-emerald);
-  color: #06281e;
-  border-color: var(--accent-emerald-light);
+  background-color: var(--accent-tea-green);
+  color: #151515;
+  border-color: rgba(193, 237, 204, 0.7);
+  font-weight: 700;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: #059669;
-  color: #ffffff;
-  box-shadow: 0 0 15px var(--accent-emerald-glow);
+  background-color: var(--accent-tea-green-hover);
+  color: #0d0d0d;
+  border-color: var(--accent-tea-green);
 }
 
+.btn-primary:active:not(:disabled) {
+  background-color: var(--accent-tea-green-active);
+  transform: translateY(1px);
+}
+
+/* Secondary Button: Neutral Elevated Surface */
 .btn-secondary {
   background-color: var(--bg-elevated);
   border-color: var(--border-medium);
@@ -206,11 +268,14 @@ p, span, label {
 
 .btn-secondary:hover:not(:disabled) {
   background-color: var(--bg-card-hover);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(193, 237, 204, 0.4);
+  color: var(--accent-tea-green);
 }
 
+/* Ghost Button: Transparent */
 .btn-ghost {
   background-color: transparent;
+  border-color: transparent;
   color: var(--text-secondary);
 }
 
@@ -220,51 +285,57 @@ p, span, label {
 }
 
 .btn:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
+  transform: none;
 }
 
-/* Segmented Pill Selector (Module Navigation) */
-.pill-nav {
+/* ============================================================================
+   Segmented Navigation (Taskbar / Module Selector) — Squircle Language
+   ============================================================================ */
+.segmented-nav, .pill-nav {
   display: inline-flex;
+  align-items: center;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-full);
-  padding: 0.25rem;
-  gap: 0.25rem;
+  border-radius: var(--radius-md);
+  padding: 3px;
+  gap: 3px;
   max-width: 100%;
   overflow-x: auto;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
 }
 
-.pill-item {
-  padding: 0.5rem 1.25rem;
-  font-size: 0.875rem;
+.segmented-nav-item, .pill-item {
+  padding: 0.45rem 1rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--text-secondary);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   border: none;
   background: transparent;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
+  transition: all 0.15s ease;
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   font-family: inherit;
   flex-shrink: 0;
+  user-select: none;
 }
 
-.pill-item:hover:not(.active) {
+.segmented-nav-item:hover:not(.active), .pill-item:hover:not(.active) {
   color: var(--text-primary);
   background-color: rgba(255, 255, 255, 0.04);
 }
 
-.pill-item.active {
-  background-color: var(--accent-emerald);
-  color: #042419;
+.segmented-nav-item.active, .pill-item.active {
+  background-color: var(--bg-elevated);
+  color: var(--accent-tea-green);
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  border: 1px solid rgba(193, 237, 204, 0.35);
+  box-shadow: var(--shadow-subtle);
 }
 
 /* Accessible Keyboard Focus Ring */
@@ -272,47 +343,72 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 a:focus-visible {
-  outline: 2px solid var(--accent-emerald);
+  outline: 2px solid var(--accent-tea-green);
   outline-offset: 2px;
 }
 
-/* Badges & Pills */
+/* ============================================================================
+   Badges & Tags — Flat, Subtle, Tea Green System
+   ============================================================================ */
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.25rem 0.625rem;
-  border-radius: var(--radius-full);
+  gap: 0.3rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-xs);
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
 }
 
-.badge-emerald {
-  background-color: var(--accent-emerald-glow);
-  color: var(--accent-emerald-light);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+/* Tea Green / Emerald Badge */
+.badge-emerald, .badge-tea-green {
+  background-color: var(--accent-tea-green-subtle);
+  color: var(--accent-tea-green);
+  border: 1px solid var(--accent-tea-green-border);
 }
 
 .badge-blue {
-  background-color: var(--accent-blue-glow);
+  background-color: var(--accent-blue-subtle);
   color: var(--accent-blue);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-}
-
-.badge-rose {
-  background-color: rgba(244, 63, 94, 0.15);
-  color: #fb7185;
-  border: 1px solid rgba(244, 63, 94, 0.3);
+  border: 1px solid rgba(56, 189, 248, 0.25);
 }
 
 .badge-amber {
-  background-color: rgba(245, 158, 11, 0.15);
+  background-color: var(--accent-amber-subtle);
   color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  border: 1px solid rgba(245, 158, 11, 0.25);
 }
 
-/* Tables */
+.badge-rose {
+  background-color: var(--accent-rose-subtle);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.25);
+}
+
+.badge-neutral {
+  background-color: rgba(176, 192, 188, 0.1);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+/* Semantic Position Tag */
+.tag-position {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-xs);
+  font-size: 0.71875rem;
+  font-weight: 600;
+  background-color: rgba(56, 189, 248, 0.1);
+  color: var(--accent-blue);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+/* ============================================================================
+   Tables — Clean Technical Grid with Tea Green Active States
+   ============================================================================ */
 .table-container {
   width: 100%;
   overflow-x: auto;
@@ -335,7 +431,7 @@ a:focus-visible {
   color: var(--text-secondary);
   font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   border-bottom: 1px solid var(--border-medium);
   white-space: nowrap;
 }
@@ -348,7 +444,7 @@ a:focus-visible {
 }
 
 .data-table tbody tr {
-  transition: background-color 0.15s ease;
+  transition: background-color 0.12s ease;
   cursor: pointer;
 }
 
@@ -357,12 +453,12 @@ a:focus-visible {
 }
 
 .data-table tbody tr.selected {
-  background-color: rgba(16, 185, 129, 0.08);
-  border-left: 3px solid var(--accent-emerald);
+  background-color: rgba(193, 237, 204, 0.08);
+  box-shadow: inset 3px 0 0 var(--accent-tea-green);
 }
 
-/* Animations */
-@keyframes fadeIn {
+/* Animations & Transitions */
+@keyframes moduleFadeSlide {
   from {
     opacity: 0;
     transform: translateY(6px);
@@ -374,16 +470,51 @@ a:focus-visible {
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: moduleFadeSlide 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes pulseGlow {
+@keyframes skeletonPulse {
+  0% {
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+  50% {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+  100% {
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.skeleton-pulse {
+  animation: skeletonPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulseSlow {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  50% { opacity: 0.35; }
 }
 
 .animate-pulse-slow {
-  animation: pulseGlow 2s infinite ease-in-out;
+  animation: pulseSlow 2s infinite ease-in-out;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 0.9s linear infinite;
+}
+
+/* Reduced Motion Respect */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Scrollbars */
@@ -396,7 +527,7 @@ a:focus-visible {
 }
 ::-webkit-scrollbar-thumb {
   background: var(--border-medium);
-  border-radius: 3px;
+  border-radius: var(--radius-xs);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
@@ -421,6 +552,7 @@ a:focus-visible {
   gap: 1rem;
 }
 
+/* Split Sidebar Layout (used for Transfer & Match Predictors) */
 .grid-layout-with-sidebar {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -443,12 +575,25 @@ a:focus-visible {
   }
 }
 
-/* Probability Bar */
+/* Scouting Section Layout — Table Full Width + Dedicated Detail Section Below */
+.scouting-results-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  width: 100%;
+}
+
+.scouting-detail-section {
+  width: 100%;
+  animation: moduleFadeSlide 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Match Probability Bar */
 .probability-bar-track {
-  height: 12px;
+  height: 10px;
   width: 100%;
   background-color: var(--bg-surface);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-pill);
   overflow: hidden;
   display: flex;
   border: 1px solid var(--border-subtle);
@@ -456,38 +601,37 @@ a:focus-visible {
 }
 
 .prob-segment-home {
-  background: linear-gradient(90deg, #059669, #10b981);
+  background: var(--accent-tea-green);
   transition: width 0.4s ease;
 }
 
 .prob-segment-draw {
-  background: linear-gradient(90deg, #d97706, #f59e0b);
+  background: #f59e0b;
   transition: width 0.4s ease;
 }
 
 .prob-segment-away {
-  background: linear-gradient(90deg, #0284c7, #38bdf8);
+  background: #38bdf8;
   transition: width 0.4s ease;
 }
 
 /* Value Highlight Card */
 .valuation-display {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(14, 19, 27, 0.9) 100%);
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-medium);
   border-radius: var(--radius-lg);
-  padding: 1.75rem;
+  padding: 1.5rem;
   position: relative;
   overflow: hidden;
 }
 
 .valuation-amount {
-  font-size: 2.75rem;
+  font-size: 2.5rem;
   font-weight: 800;
   letter-spacing: -0.04em;
   color: #ffffff;
   line-height: 1.1;
   margin: 0.5rem 0;
-  text-shadow: 0 0 25px rgba(16, 185, 129, 0.25);
   font-family: var(--font-mono);
 }
 
@@ -495,7 +639,7 @@ a:focus-visible {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(4, 7, 12, 0.8);
+  background-color: rgba(21, 21, 21, 0.88);
   backdrop-filter: blur(8px);
   z-index: 100;
   display: flex;
@@ -526,7 +670,7 @@ a:focus-visible {
   top: calc(100% + 4px);
   left: 0;
   right: 0;
-  max-height: 280px;
+  max-height: 320px;
   overflow-y: auto;
   background-color: var(--bg-elevated);
   border: 1px solid var(--border-medium);
@@ -552,14 +696,3 @@ a:focus-visible {
 .autocomplete-item:hover {
   background-color: var(--bg-card-hover);
 }
-
-/* Spin animation */
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.animate-spin {
-  animation: spin 1s linear infinite;
-}
-

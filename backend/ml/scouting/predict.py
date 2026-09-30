@@ -36,6 +36,7 @@ def load_scouting_index(model_path: Path = DEFAULT_MODEL_PATH) -> ScoutingSimila
 def get_similar_players(
     player_name: str,
     top_n: int = 10,
+    include_free_agents: bool = False,
     model_path: Path = DEFAULT_MODEL_PATH,
 ) -> List[Dict[str, Any]]:
     """Retrieve the top N most similar players based on football performance profile.
@@ -43,6 +44,7 @@ def get_similar_players(
     Args:
         player_name: Name of target player.
         top_n: Number of candidates to return (default: 10).
+        include_free_agents: Whether to include verified free agents (default: False).
         model_path: Path to serialized scouting model artifact.
 
     Returns:
@@ -55,6 +57,7 @@ def get_similar_players(
         max_market_value=None,
         max_age=None,
         min_minutes=None,
+        include_free_agents=include_free_agents,
         model_path=model_path,
     )
 
@@ -67,6 +70,7 @@ def find_replacements(
     max_age: Optional[int] = None,
     min_minutes: Optional[int] = None,
     season: Optional[str] = None,
+    include_free_agents: bool = False,
     model_path: Path = DEFAULT_MODEL_PATH,
 ) -> List[Dict[str, Any]]:
     """Find ranked replacement candidates for a target player subject to scouting constraints.
@@ -79,6 +83,7 @@ def find_replacements(
         max_age: Maximum player age in years (optional).
         min_minutes: Minimum minutes played in season (optional).
         season: Specific season to match target against (e.g. '2023-24'). Defaults to latest.
+        include_free_agents: Whether to include verified free agents (default: False).
         model_path: Path to model artifact.
 
     Returns:
@@ -112,6 +117,7 @@ def find_replacements(
         max_age=max_age,
         min_minutes=min_minutes,
         season=season,
+        include_free_agents=include_free_agents,
     )
 
     if not results:

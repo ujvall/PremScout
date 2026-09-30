@@ -15,7 +15,7 @@ export const TransferResult: React.FC<TransferResultProps> = ({
     return (
       <div className="card" style={{ padding: "2rem", textAlign: "center" }}>
         <div className="animate-spin" style={{ display: "inline-block", marginBottom: "0.75rem" }}>
-          <TrendingUp size={28} color="var(--accent-emerald)" />
+          <TrendingUp size={28} color="var(--accent-tea-green)" />
         </div>
         <h4 style={{ fontSize: "1.125rem", color: "var(--text-primary)", marginBottom: "0.25rem" }}>
           Evaluating Valuation Model...
@@ -74,7 +74,7 @@ export const TransferResult: React.FC<TransferResultProps> = ({
               fontWeight: 700,
               textTransform: "uppercase",
               letterSpacing: "0.08em",
-              color: "var(--accent-emerald-light)",
+              color: "var(--accent-tea-green)",
             }}
           >
             Estimated Market Value
@@ -107,7 +107,7 @@ export const TransferResult: React.FC<TransferResultProps> = ({
           <div>
             <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Model</span>
             <div style={{ display: "flex", alignItems: "center", gap: "0.35rem", marginTop: "0.2rem" }}>
-              <Cpu size={14} color="var(--accent-emerald)" />
+              <Cpu size={14} color="var(--accent-tea-green)" />
               <span style={{ fontSize: "0.875rem", fontWeight: 600 }}>{result.model_type}</span>
             </div>
           </div>

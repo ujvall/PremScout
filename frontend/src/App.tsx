@@ -83,10 +83,12 @@ export function App() {
           </div>
         )}
 
-        {/* Dynamic Module Rendering */}
-        {activeModule === "transfer" && <TransferModule />}
-        {activeModule === "match" && <MatchModule />}
-        {activeModule === "scouting" && <ScoutingModule />}
+        {/* Dynamic Module Rendering with Polish Transition */}
+        <div key={activeModule} className="animate-fade-in">
+          {activeModule === "transfer" && <TransferModule />}
+          {activeModule === "match" && <MatchModule />}
+          {activeModule === "scouting" && <ScoutingModule />}
+        </div>
       </main>
 
       {/* Model Information Modal */}

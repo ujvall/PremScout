@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import type { PlayerSearchItem, ReplacementCandidate } from "../../types/api";
 import { fetchSimilarPlayers } from "../../api";
 import { PlayerSearchInput } from "./PlayerSearchInput";
 import { PlayerDetailCard } from "./PlayerDetailCard";
-import { Users, Search, AlertCircle } from "lucide-react";
+import { TableSkeleton } from "../common/Skeleton";
+import { Users, Search, AlertCircle, ArrowDown } from "lucide-react";
 
-export const SimilarPlayersView: React.FC = () => {
+interface SimilarPlayersViewProps {
+  includeFreeAgents?: boolean;
+  setIncludeFreeAgents?: (val: boolean) => void;
+}
+
+export const SimilarPlayersView: React.FC<SimilarPlayersViewProps> = ({
+  includeFreeAgents = false,
+}) => {
   const [selectedPlayer, setSelectedPlayer] = useState<PlayerSearchItem | null>(null);
   const [topN, setTopN] = useState<number>(10);
   const [loading, setLoading] = useState<boolean>(false);
@@ -13,6 +21,7 @@ export const SimilarPlayersView: React.FC = () => {
   const [candidates, setCandidates] = useState<ReplacementCandidate[]>([]);
   const [activeCandidate, setActiveCandidate] = useState<ReplacementCandidate | null>(null);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
+  const detailRef = useRef<HTMLDivElement>(null);
 
   const handleSearch = async () => {
     if (!selectedPlayer) {
@@ -26,7 +35,7 @@ export const SimilarPlayersView: React.FC = () => {
     setHasSearched(true);
 
     try {
-      const results = await fetchSimilarPlayers(selectedPlayer.player_name, topN);
+      const results = await fetchSimilarPlayers(selectedPlayer.player_name, topN, includeFreeAgents);
       setCandidates(results);
       if (results.length > 0) {
         setActiveCandidate(results[0]);
@@ -41,18 +50,26 @@ export const SimilarPlayersView: React.FC = () => {
     }
   };
 
+  const handleSelectCandidate = (c: ReplacementCandidate) => {
+    setActiveCandidate(c);
+    // Smooth scroll down to detail card if user clicks a candidate
+    setTimeout(() => {
+      detailRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 50);
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-      {/* Controls Card */}
+      {/* 1. Target Player Search Controls */}
       <div className="card">
         <div className="card-header">
           <div>
             <h4 className="card-title">
-              <Users size={18} color="var(--accent-emerald)" />
-              Select Target Player for Similarity Analysis
+              <Users size={17} color="var(--accent-tea-green)" />
+              Target Player &amp; Similarity Configuration
             </h4>
             <p className="card-subtitle">
-              Calculates cosine similarity vectors across normalized football performance metrics
+              Calculates multidimensional cosine similarity vectors across normalized European league metrics
             </p>
           </div>
         </div>
@@ -62,6 +79,7 @@ export const SimilarPlayersView: React.FC = () => {
             selectedPlayer={selectedPlayer}
             onSelectPlayer={setSelectedPlayer}
             placeholder="Type player name to search (e.g. Declan Rice, Rodri, Martin Odegaard, Mo Salah)..."
+            includeFreeAgents={includeFreeAgents}
           />
 
           <div
@@ -71,21 +89,21 @@ export const SimilarPlayersView: React.FC = () => {
               justifyContent: "space-between",
               flexWrap: "wrap",
               gap: "1rem",
-              paddingTop: "0.5rem",
+              paddingTop: "0.25rem",
             }}
           >
-            {/* Top N Selector */}
+            {/* Top N Candidate Selector */}
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <span style={{ fontSize: "0.8125rem", color: "var(--text-secondary)" }}>
-                Return Top N Candidates:
+                Return Top Candidates:
               </span>
-              <div className="pill-nav">
+              <div className="segmented-nav">
                 {[5, 10, 15, 20].map((n) => (
                   <button
                     key={n}
                     type="button"
-                    className={`pill-item ${topN === n ? "active" : ""}`}
-                    style={{ padding: "0.25rem 0.75rem", fontSize: "0.8125rem" }}
+                    className={`segmented-nav-item ${topN === n ? "active" : ""}`}
+                    style={{ padding: "0.25rem 0.625rem", fontSize: "0.8125rem" }}
                     onClick={() => setTopN(n)}
                   >
                     {n}
@@ -100,7 +118,6 @@ export const SimilarPlayersView: React.FC = () => {
               disabled={loading || !selectedPlayer}
               onClick={handleSearch}
               className="btn btn-primary"
-              style={{ padding: "0.625rem 1.5rem" }}
             >
               {loading ? (
                 <>
@@ -109,17 +126,17 @@ export const SimilarPlayersView: React.FC = () => {
                     style={{
                       width: "14px",
                       height: "14px",
-                      border: "2px solid #06281e",
+                      border: "2px solid #151515",
                       borderTopColor: "transparent",
                       borderRadius: "50%",
                     }}
                   />
-                  Finding Similar Players...
+                  <span>Finding Similar Players...</span>
                 </>
               ) : (
                 <>
-                  <Search size={16} />
-                  Find Similar Players
+                  <Search size={15} />
+                  <span>Find Similar Players</span>
                 </>
               )}
             </button>
@@ -133,9 +150,9 @@ export const SimilarPlayersView: React.FC = () => {
             display: "flex",
             alignItems: "center",
             gap: "0.75rem",
-            padding: "1rem 1.25rem",
+            padding: "0.875rem 1.25rem",
             borderRadius: "var(--radius-md)",
-            backgroundColor: "rgba(244, 63, 94, 0.12)",
+            backgroundColor: "var(--accent-rose-subtle)",
             border: "1px solid rgba(244, 63, 94, 0.3)",
             color: "#fb7185",
             fontSize: "0.875rem",
@@ -146,12 +163,155 @@ export const SimilarPlayersView: React.FC = () => {
         </div>
       )}
 
-      {/* Results View */}
-      {candidates.length > 0 && (
-        <div className="grid-layout-with-sidebar animate-fade-in">
-          {/* Candidates Table Left */}
-          <div>
-            <div className="card" style={{ padding: "1rem" }}>
+      {/* Loading Skeleton */}
+      {loading && <TableSkeleton rows={topN} columns={10} />}
+
+      {/* 2. Full-Width Candidates Results Table */}
+      {!loading && candidates.length > 0 && (
+        <div className="scouting-results-container">
+          <div className="card" style={{ padding: "1.25rem" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: "1rem",
+                flexWrap: "wrap",
+                gap: "0.5rem",
+              }}
+            >
+              <div>
+                <span style={{ fontSize: "0.9375rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                  Ranked Similar Candidates
+                </span>
+                <span
+                  style={{
+                    fontSize: "0.8125rem",
+                    color: "var(--text-secondary)",
+                    marginLeft: "0.5rem",
+                  }}
+                >
+                  ({candidates.length} profiles calculated)
+                </span>
+              </div>
+              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+                <span>Select any row to inspect profile below</span>
+                <ArrowDown size={13} />
+              </span>
+            </div>
+
+            <div className="table-container">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th style={{ width: "45px" }}>Rank</th>
+                    <th>Player</th>
+                    <th>Club</th>
+                    <th>League</th>
+                    <th>Position</th>
+                    <th style={{ textAlign: "right" }}>Similarity</th>
+                    <th>Compatibility</th>
+                    <th>Age</th>
+                    <th>Market Value</th>
+                    <th style={{ textAlign: "right" }}>Minutes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {candidates.map((c, idx) => {
+                    const isSelected = activeCandidate?.candidate_player === c.candidate_player;
+                    const clubDisplay = c.current_club || c.candidate_club;
+                    const leagueDisplay = c.is_free_agent
+                      ? "Free Agent"
+                      : c.current_league || (c.is_current_big5 ? "Big 5 Active" : "—");
+                    const mvDisplay =
+                      c.market_value_eur != null && !isNaN(c.market_value_eur) && c.market_value_eur > 0
+                        ? `€${(c.market_value_eur / 1e6).toFixed(1)}M`
+                        : "Not available";
+
+                    return (
+                      <tr
+                        key={`${c.candidate_player}-${c.candidate_season}`}
+                        onClick={() => handleSelectCandidate(c)}
+                        className={isSelected ? "selected" : ""}
+                      >
+                        <td style={{ fontWeight: 600, color: "var(--text-muted)", width: "45px" }}>
+                          #{idx + 1}
+                        </td>
+                        <td style={{ fontWeight: 600, color: "var(--text-primary)" }}>
+                          {c.candidate_player}
+                        </td>
+                        <td style={{ color: "var(--text-secondary)" }}>
+                          {clubDisplay}
+                        </td>
+                        <td>
+                          {c.is_free_agent ? (
+                            <span className="badge badge-amber" style={{ fontSize: "0.71875rem" }}>
+                              Free Agent
+                            </span>
+                          ) : (
+                            <span style={{ color: "var(--text-secondary)", fontSize: "0.8125rem" }}>
+                              {leagueDisplay}
+                            </span>
+                          )}
+                        </td>
+                        <td>
+                          <span className="tag-position">
+                            {c.candidate_position || c.candidate_raw_position}
+                          </span>
+                        </td>
+                        <td style={{ textAlign: "right" }}>
+                          <span
+                            style={{
+                              fontSize: "1rem",
+                              fontWeight: 700,
+                              fontFamily: "var(--font-mono)",
+                              color: "var(--accent-tea-green)",
+                            }}
+                          >
+                            {c.similarity_score.toFixed(1)}
+                          </span>
+                          <span style={{ fontSize: "0.6875rem", color: "var(--text-muted)", marginLeft: "2px" }}>
+                            / 100
+                          </span>
+                        </td>
+                        <td>
+                          <span
+                            className={`badge ${
+                              c.position_compatibility === "Same Position"
+                                ? "badge-emerald"
+                                : "badge-blue"
+                            }`}
+                          >
+                            {c.position_compatibility}
+                          </span>
+                        </td>
+                        <td style={{ color: "var(--text-secondary)" }}>{c.age ?? "—"}</td>
+                        <td>
+                          <span
+                            style={{
+                              fontWeight: mvDisplay === "Not available" ? 400 : 600,
+                              color: mvDisplay === "Not available" ? "var(--text-muted)" : "var(--text-primary)",
+                              fontFamily: mvDisplay === "Not available" ? "inherit" : "var(--font-mono)",
+                              fontSize: "0.8125rem",
+                            }}
+                          >
+                            {mvDisplay}
+                          </span>
+                        </td>
+                        <td style={{ textAlign: "right", color: "var(--text-muted)", fontFamily: "var(--font-mono)", fontSize: "0.8125rem" }}>
+                          {c.minutes.toLocaleString()}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* 3. Selected Candidate Profile Section — Renders Responsively Below Table */}
+          {activeCandidate && (
+            <div ref={detailRef} className="scouting-detail-section">
               <div
                 style={{
                   display: "flex",
@@ -160,103 +320,16 @@ export const SimilarPlayersView: React.FC = () => {
                   marginBottom: "0.75rem",
                 }}
               >
-                <span style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--text-secondary)" }}>
-                  Ranked Similar Candidates ({candidates.length} matches)
-                </span>
-                <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
-                  Click row to view full statistical radar
-                </span>
+                <h4 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--text-secondary)", margin: 0 }}>
+                  Selected Candidate Scouting Profile
+                </h4>
               </div>
-
-              <div className="table-container">
-                <table className="data-table">
-                  <thead>
-                    <tr>
-                      <th style={{ width: "50px" }}>Rank</th>
-                      <th>Player</th>
-                      <th>Club</th>
-                      <th>Position</th>
-                      <th style={{ textAlign: "right" }}>Similarity</th>
-                      <th>Compatibility</th>
-                      <th>Age</th>
-                      <th>Market Value</th>
-                      <th>Minutes</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {candidates.map((c, idx) => {
-                      const isSelected = activeCandidate?.candidate_player === c.candidate_player;
-                      return (
-                        <tr
-                          key={`${c.candidate_player}-${c.candidate_season}`}
-                          onClick={() => setActiveCandidate(c)}
-                          className={isSelected ? "selected" : ""}
-                        >
-                          <td style={{ fontWeight: 700, color: "var(--text-muted)", width: "50px" }}>
-                            #{idx + 1}
-                          </td>
-                          <td style={{ fontWeight: 600, color: "#ffffff" }}>
-                            {c.candidate_player}
-                          </td>
-                          <td style={{ color: "var(--text-secondary)" }}>
-                            {c.candidate_club}
-                          </td>
-                          <td>
-                            <span className="badge badge-blue">
-                              {c.candidate_position || c.candidate_raw_position}
-                            </span>
-                          </td>
-                          <td style={{ textAlign: "right" }}>
-                            <span
-                              style={{
-                                fontSize: "1.05rem",
-                                fontWeight: 800,
-                                fontFamily: "var(--font-mono)",
-                                color: "var(--accent-emerald-light)",
-                              }}
-                            >
-                              {c.similarity_score.toFixed(1)}
-                            </span>
-                            <span style={{ fontSize: "0.6875rem", color: "var(--text-muted)", marginLeft: "2px" }}>
-                              / 100
-                            </span>
-                          </td>
-                          <td>
-                            <span
-                              className={`badge ${
-                                c.position_compatibility === "Same Position"
-                                  ? "badge-emerald"
-                                  : "badge-blue"
-                              }`}
-                            >
-                              {c.position_compatibility}
-                            </span>
-                          </td>
-                          <td>{c.age ?? "—"}</td>
-                          <td style={{ fontFamily: "var(--font-mono)" }}>
-                            {c.market_value_eur
-                              ? `€${(c.market_value_eur / 1e6).toFixed(1)}M`
-                              : "—"}
-                          </td>
-                          <td>{c.minutes}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          {/* Active Candidate Detail Panel Right */}
-          <div>
-            <div style={{ position: "sticky", top: "5.5rem" }}>
               <PlayerDetailCard
                 candidate={activeCandidate}
                 onClose={() => setActiveCandidate(null)}
               />
             </div>
-          </div>
+          )}
         </div>
       )}
 
@@ -265,7 +338,7 @@ export const SimilarPlayersView: React.FC = () => {
         <div
           className="card"
           style={{
-            padding: "3rem 1.5rem",
+            padding: "3.5rem 1.5rem",
             textAlign: "center",
             borderStyle: "dashed",
             borderColor: "var(--border-subtle)",
@@ -273,9 +346,9 @@ export const SimilarPlayersView: React.FC = () => {
         >
           <div
             style={{
-              width: "48px",
-              height: "48px",
-              borderRadius: "50%",
+              width: "44px",
+              height: "44px",
+              borderRadius: "var(--radius-md)",
               backgroundColor: "var(--bg-elevated)",
               display: "flex",
               alignItems: "center",
@@ -284,15 +357,15 @@ export const SimilarPlayersView: React.FC = () => {
               color: "var(--text-muted)",
             }}
           >
-            <Users size={22} />
+            <Users size={20} />
           </div>
-          <h4 style={{ fontSize: "1rem", color: "var(--text-secondary)", marginBottom: "0.35rem" }}>
-            {hasSearched ? "No similar candidates found" : "No player selected"}
+          <h4 style={{ fontSize: "0.9375rem", color: "var(--text-secondary)", marginBottom: "0.35rem" }}>
+            {hasSearched ? "No similar candidates found" : "No target player selected"}
           </h4>
-          <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)", maxWidth: "340px", margin: "0 auto" }}>
+          <p style={{ fontSize: "0.8125rem", color: "var(--text-muted)", maxWidth: "380px", margin: "0 auto" }}>
             {hasSearched
-              ? "No matching players met the statistical similarity threshold."
-              : "Choose a target player to begin statistical cosine similarity analysis and recruitment exploration."}
+              ? "No matching players met the statistical similarity threshold with the active filters."
+              : "Search and choose an eligible Big 5 player to begin cosine similarity analysis and recruitment exploration."}
           </p>
         </div>
       )}

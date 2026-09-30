@@ -293,12 +293,14 @@ def test_current_player_search_cherki():
     assert "Cherki" in cherki["player_name"]
     assert cherki["club"] == "Manchester City"
     assert cherki["age"] == 23
-    assert cherki["season"] == "2025-26"
+    assert cherki["season"] == "2026-27"
+    assert cherki["is_current_big5"] == True
+    assert cherki["eligibility_status"] == "BIG5_ACTIVE"
     assert cherki["data_as_of"] == "2026-09-20"
 
 
 def test_current_player_search_haaland():
-    """Verify Erling Haaland returns current age 26 and season 2025-26 (not stale age 23)."""
+    """Verify Erling Haaland returns current age 26 and season 2026-27 (not stale age 23)."""
     response = client.get("/api/scouting/players?search=haaland&limit=5")
     assert response.status_code == 200
     players = response.json()
@@ -307,7 +309,9 @@ def test_current_player_search_haaland():
     assert haaland["player_name"] == "Erling Haaland"
     assert haaland["club"] == "Manchester City"
     assert haaland["age"] == 26
-    assert haaland["season"] == "2025-26"
+    assert haaland["season"] == "2026-27"
+    assert haaland["is_current_big5"] == True
+    assert haaland["eligibility_status"] == "BIG5_ACTIVE"
     assert haaland["data_as_of"] == "2026-09-20"
 
 
@@ -321,7 +325,7 @@ def test_current_player_search_martinez_accents():
     emi = next((p for p in players if "Aston Villa" in p["club"]), None)
     assert emi is not None
     assert emi["age"] == 34
-    assert emi["season"] == "2025-26"
+    assert emi["season"] == "2026-27"
 
 
 def test_cherki_scouting_similarity_v2():
@@ -336,6 +340,12 @@ def test_cherki_scouting_similarity_v2():
     assert first["target_season"] == "2025-26"
     assert first["data_as_of"] == "2026-09-20"
     assert 0.0 <= first["similarity_score"] <= 100.0
+    # Big-5 eligibility assertions
+    assert first["is_current_big5"] == True
+    assert first["is_free_agent"] == False
+    assert first["current_league"] in ["Premier League", "La Liga", "Bundesliga", "Serie A", "Ligue 1"]
+    assert "performance_club" in first
+    assert "performance_league" in first
 
 
 def test_transfer_presets_dynamic():
@@ -394,4 +404,115 @@ def test_match_current_fixture_features():
     assert "away_elo" in f
     assert "elo_diff" in f
     assert "rank_diff" in f
+
+
+def test_scouting_eligibility_big5_and_firmino_exclusion():
+    """Verify that player search dynamically excludes non-Big 5 players (such as Roberto Firmino in Qatar),
+    surfaces only BIG5_ACTIVE candidates, and replacement candidates exclude non-Big 5 players by default."""
+    # 1. Search player test: Roberto Firmino (Qatar Stars League / NON_BIG5) must NOT appear in search results
+    resp_firmino = client.get("/api/scouting/players?search=Firmino&limit=5")
+    assert resp_firmino.status_code == 200
+    firmino_results = resp_firmino.json()
+    assert len(firmino_results) == 0, "Non-Big 5 players like Firmino must be dynamically excluded from player search"
+
+    # 2. Eligible Big 5 player search: Erling Haaland must appear and be BIG5_ACTIVE
+    resp_haaland = client.get("/api/scouting/players?search=Haaland&limit=5")
+    assert resp_haaland.status_code == 200
+    haaland_results = resp_haaland.json()
+    assert len(haaland_results) > 0
+    haaland = next((p for p in haaland_results if "Erling Haaland" in p["player_name"]), None)
+    assert haaland is not None
+    assert haaland["eligibility_status"] == "BIG5_ACTIVE"
+    assert haaland["is_current_big5"] is True
+    assert haaland["current_league"] == "Premier League"
+
+    # 3. Replacements query: Firmino must NEVER appear in candidate results
+    resp_repl = client.post(
+        "/api/scouting/replacements",
+        json={
+            "player_name": "Erling Haaland",
+            "top_n": 50,
+            "same_position_only": False,
+            "include_free_agents": False,
+        },
+    )
+    assert resp_repl.status_code == 200
+    candidates = resp_repl.json()
+    assert len(candidates) > 0
+    for c in candidates:
+        assert c["is_current_big5"] is True
+        assert c["is_free_agent"] is False
+        assert c["current_league"] in ["Premier League", "La Liga", "Bundesliga", "Serie A", "Ligue 1"]
+        assert "firmino" not in c["candidate_player"].lower()
+
+
+def test_scouting_eligibility_free_agent_toggle():
+    """Verify that Free Agents are excluded by default and can be included via toggle."""
+    # Default: include_free_agents=False
+    resp_off = client.post(
+        "/api/scouting/replacements",
+        json={
+            "player_name": "Martin Dúbravka",
+            "top_n": 50,
+            "same_position_only": False,
+            "include_free_agents": False,
+        },
+    )
+    assert resp_off.status_code == 200
+    cands_off = resp_off.json()
+    for c in cands_off:
+        assert c["is_free_agent"] is False
+
+    # Toggle ON: include_free_agents=True
+    resp_on = client.post(
+        "/api/scouting/replacements",
+        json={
+            "player_name": "Martin Dúbravka",
+            "top_n": 50,
+            "same_position_only": False,
+            "include_free_agents": True,
+        },
+    )
+    assert resp_on.status_code == 200
+    cands_on = resp_on.json()
+    fa_cands = [c for c in cands_on if c.get("is_free_agent")]
+    assert len(fa_cands) >= 1
+    fa = fa_cands[0]
+    assert fa["current_league"] == "Free Agent"
+    assert fa["is_free_agent"] is True
+
+
+def test_scouting_market_value_and_recent_form():
+    """Verify that candidate market values are mapped accurately and recent form is verified 2025/26."""
+    resp = client.get("/api/scouting/similar/Declan%20Rice?top_n=10&include_free_agents=false")
+    assert resp.status_code == 200
+    candidates = resp.json()
+    assert len(candidates) > 0
+
+    has_recent_form = False
+    has_market_value = False
+
+    for c in candidates:
+        # Check market value mapping
+        if c.get("market_value_eur") is not None:
+            assert isinstance(c["market_value_eur"], (int, float))
+            assert c["market_value_eur"] > 0
+            has_market_value = True
+
+        # Check recent form mapping
+        rf = c.get("recent_form")
+        if rf is not None:
+            has_recent_form = True
+            assert rf["season"] == "2025/26"
+            assert "Match Form" in rf["label"]
+            assert isinstance(rf["matches"], list)
+            for m in rf["matches"]:
+                assert m["result"] in ["W", "D", "L"]
+                assert "date" in m
+                assert "minutes" in m
+
+    assert has_market_value, "At least one candidate must have a verified market value"
+    assert has_recent_form, "At least one candidate must have verified 2025/26 recent match form"
+
+
 
